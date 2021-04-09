@@ -2,7 +2,7 @@ services:
     app:
         build:
             context: ./relieveme-back
-            dockerfile: ./relieveme-back/Dockerfile
+            dockerfile: ./Dockerfile
         networks:
             - net
         links:
