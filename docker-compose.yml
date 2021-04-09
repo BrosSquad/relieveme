@@ -44,7 +44,7 @@ services:
             - net
         restart: unless-stopped
     postgres:
-        image: postgres:13.2-alpine
+        image: postgis/postgis:13-alpine
         restart: unless-stopped
         ports:
             - 5432:5432
