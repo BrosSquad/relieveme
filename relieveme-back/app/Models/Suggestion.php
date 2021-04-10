@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Suggestion whereName(string $value)
  * @method static Builder|Suggestion whereUpdatedAt(Carbon | null $value)
  * @mixin Eloquent
+ * @property-read Hazard $hazard
  */
 class Suggestion extends Model
 {
