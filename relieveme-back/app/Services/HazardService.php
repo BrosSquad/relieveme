@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 
-use App\Events\NewHazardHappened;
+use App\Jobs\SendNotificationsToUsers;
 use App\Models\Hazard;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -43,7 +43,9 @@ class HazardService
 
         $hazard->save();
 
-        $this->dispatcher->dispatch(new NewHazardHappened($hazard));
+        SendNotificationsToUsers::dispatch($hazard)
+            ->allOnQueue('listeners')
+            ->delay(now()->addSeconds(10));
 
         return $hazard;
     }
