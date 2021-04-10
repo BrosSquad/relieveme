@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\UserLocationHistory;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use App\Models\UserLocationHistory;
 use MStaack\LaravelPostgis\Geometries\Point;
 use NotificationChannels\ExpoPushNotifications\ExpoChannel;
 
