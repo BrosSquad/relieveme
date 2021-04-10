@@ -25,10 +25,21 @@ class TransportFactory extends Factory
         $types = ['helikopter', 'kombi', 'autobus'];
 
         return [
-            'geolocation' => '',
-            'type' => $types[rand(0, 2)],
+            'location' => $this->faker->randomElement(
+                [
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                ]
+            ),
+            'type' => $this->faker->randomElement($types),
             'phone_numbers' => $this->faker->phoneNumber,
-            'description' => $this->faker->paragraph(4)
+            'description' => $this->faker->paragraph(2)
         ];
     }
 }

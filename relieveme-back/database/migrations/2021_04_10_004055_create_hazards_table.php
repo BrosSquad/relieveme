@@ -19,7 +19,8 @@ class CreateHazardsTable extends Migration
                 $table->id();
                 $table->string('danger', 50)->nullable(false);
                 $table->unsignedTinyInteger('level');
-                $table->polygon('location');
+                $table->point('location');
+                $table->unsignedInteger('radius')->nullable(false);
                 $table->timestamps();
             }
         );

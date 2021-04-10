@@ -1,20 +1,25 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use MStaack\LaravelPostgis\Eloquent\PostgisTrait;
 
-class UserLocationHistory extends Model
+class Checkpoint extends Model
 {
     use HasFactory, PostgisTrait;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
+        'name',
         'location',
-        'user_id'
+        'radius',
+        'phone_numbers',
+        'description',
+        'people_count'
     ];
 
     protected $postgisFields = [
@@ -28,4 +33,8 @@ class UserLocationHistory extends Model
         ],
     ];
 
+    public function helps()
+    {
+        return $this->belongsToMany(Help::class, 'checkpoint_helps');
+    }
 }

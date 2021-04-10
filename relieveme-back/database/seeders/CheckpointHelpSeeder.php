@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\CheckpointHelp;
+use App\Models\Checkpoint;
+use App\Models\Help;
 use Illuminate\Database\Seeder;
 
 class CheckpointHelpSeeder extends Seeder
@@ -14,6 +15,7 @@ class CheckpointHelpSeeder extends Seeder
      */
     public function run()
     {
-        CheckpointHelp::factory(10)->create();
+        $checkpoints = Checkpoint::all();
+        $helps = Help::all();
     }
 }

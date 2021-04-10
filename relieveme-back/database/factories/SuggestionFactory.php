@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Hazard;
 use App\Models\Suggestion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,9 +22,11 @@ class SuggestionFactory extends Factory
      */
     public function definition()
     {
+        $ids = Hazard::all('id')->pluck('id')->toArray();
+
         return [
             'name' => $this->faker->name,
-            'hazard_id' => rand(1, 10)
+            'hazard_id' => $this->faker->randomElement($ids),
         ];
     }
 }

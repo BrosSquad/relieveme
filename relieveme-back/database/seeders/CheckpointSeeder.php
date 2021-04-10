@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Transport;
-use App\Models\User;
+use App\Models\Checkpoint;
 use Illuminate\Database\Seeder;
 
-class UsersTableSeeder extends Seeder
+class CheckpointSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +14,6 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
+        Checkpoint::factory(10)->create();
     }
 }

@@ -13,14 +13,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            UsersTableSeeder::class,
-            TransportTableSeeder::class,
-            HazardSeeder::class,
-            SuggestionSeeder::class,
-            CheckSeeder::class,
-            HelpSeeder::class,
-            CheckpointHelpSeeder::class
-        ]);
+        $this->call(
+            [
+                UsersTableSeeder::class,
+                CheckpointSeeder::class,
+                HelpSeeder::class,
+                TransportTableSeeder::class,
+                HazardSeeder::class,
+                SuggestionSeeder::class,
+                CheckSeeder::class,
+                CheckpointHelpSeeder::class
+            ]
+        );
     }
 }
