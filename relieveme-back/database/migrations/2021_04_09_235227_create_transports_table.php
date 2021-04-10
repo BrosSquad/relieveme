@@ -15,6 +15,12 @@ class CreateTransportsTable extends Migration
     {
         Schema::create('transports', function (Blueprint $table) {
             $table->id();
+            // TODO: Should we go with geometry or point?
+//            $table->geometry('geolocation');
+            $table->enum('type', ['helikopter', 'kombi', 'autobus']);
+            $table->string('phone_numbers');
+            $table->string('description', 200)->nullable(true);
+            // TODO: Add postgix index
             $table->timestamps();
         });
     }
