@@ -13,6 +13,7 @@ use MStaack\LaravelPostgis\Geometries\Point;
 
 class UserService
 {
+
     public function createUser(array $data): User
     {
         $location = $data['location'];
