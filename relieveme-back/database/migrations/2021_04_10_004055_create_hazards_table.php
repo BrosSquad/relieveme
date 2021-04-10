@@ -18,7 +18,7 @@ class CreateHazardsTable extends Migration
             $table->integer('radius_numbers');
             $table->integer('danger');
             $table->integer('level');
-            //$table->geometry('geolocation');
+            $table->polygon('geolocation');
             $table->timestamps();
         });
     }
