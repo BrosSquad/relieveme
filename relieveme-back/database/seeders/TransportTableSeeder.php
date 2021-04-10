@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Transport;
 use Illuminate\Database\Seeder;
 
 class TransportTableSeeder extends Seeder
@@ -14,6 +14,6 @@ class TransportTableSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
+        Transport::factory(10)->create();
     }
 }

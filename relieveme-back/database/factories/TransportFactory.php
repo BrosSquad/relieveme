@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Transport;
-use GeoJson\Geometry\Point;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use MStaack\LaravelPostgis\Geometries\Point;
 
@@ -28,19 +27,19 @@ class TransportFactory extends Factory
         return [
             'location' => $this->faker->randomElement(
                 [
-                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
-                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
-                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
-                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
-                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
-                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
-                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
-                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
+                    new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
                 ]
             ),
-            'type' => $types[rand(0, 2)],
+            'type' => $this->faker->randomElement($types),
             'phone_numbers' => $this->faker->phoneNumber,
-            'description' => $this->faker->paragraph(4)
+            'description' => $this->faker->paragraph(2)
         ];
     }
 }
