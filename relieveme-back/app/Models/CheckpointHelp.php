@@ -15,7 +15,7 @@ class CheckpointHelp extends Model
      * @var string[]
      */
     protected $fillable = [
-        'checkpoint_id',
-        'help_id'
+      'checkpoint_id',
+      'help_id'
     ];
 }
