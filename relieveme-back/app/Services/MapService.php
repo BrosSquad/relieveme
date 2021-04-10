@@ -35,7 +35,7 @@ class MapService
 
         $hazard = Hazard::whereId($hazard_id)->firstOrFail();
         $transports = Transport::all();
-        $checkpoints = Checkpoint::all();
+        $checkpoints = Checkpoint::with('helps')->get();
         $blocades = Blocade::whereHazardId($hazard_id)->firstOrFail();
 
         $data = [
@@ -45,7 +45,7 @@ class MapService
             'blocades' => $blocades
         ];
 
-        if (!cache()->put($key, json_encode($data), Carbon::now()->addMinutes(30))) {
+        if (!cache()->put($key, json_encode($data), Carbon::now()->addMinutes(5))) {
             Log::error('Error while inserting in redis.');
         }
 
