@@ -33,7 +33,8 @@
     "react-native-screens": "~2.15.2",
     "react-native-svg": "^12.1.1-0",
     "react-native-typography": "^1.4.1",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
