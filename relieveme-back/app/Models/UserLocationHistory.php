@@ -22,7 +22,7 @@ use MStaack\LaravelPostgis\Geometries\Point;
  * @method static Builder|UserLocationHistory query()
  * @mixin Eloquent
  * @property int $id
- * @property mixed $location
+ * @property Point $location
  * @property int $user_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
