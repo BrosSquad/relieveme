@@ -21,7 +21,7 @@ use MStaack\LaravelPostgis\Geometries\Point;
  *
  * @property int $id
  * @property string $name
- * @property mixed $location
+ * @property Point $location
  * @property int $capacity
  * @property string $phone_numbers
  * @property string|null $description
@@ -86,7 +86,7 @@ class Checkpoint extends Model
      */
     public function helps(): BelongsToMany
     {
-        return $this->belongsToMany(Help::class, 'checkpoint_helps');
+        return $this->belongsToMany(Help::class, 'checkpoint_help');
     }
 
     public function checks(): HasMany

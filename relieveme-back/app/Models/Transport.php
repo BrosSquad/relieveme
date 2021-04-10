@@ -17,7 +17,7 @@ use MStaack\LaravelPostgis\Geometries\Point;
  * App\Models\Transport
  *
  * @property int $id
- * @property mixed $location
+ * @property Point $location
  * @property string $type
  * @property string $phone_numbers
  * @property string|null $description
