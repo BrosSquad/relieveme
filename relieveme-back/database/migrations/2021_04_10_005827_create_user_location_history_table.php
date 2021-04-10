@@ -33,7 +33,11 @@ CREATE EXTENSION postgis_tiger_geocoder;');
         Schema::create('user_location_history', function (Blueprint $table) {
             $table->id();
             //$table->geometry('geolocation');
-            $table->string('user_id');
+
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
+
             $table->timestamps();
         });
     }

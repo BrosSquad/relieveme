@@ -16,10 +16,15 @@ class CreateChecksTable extends Migration
         Schema::create('checks', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('status');
-            $table->string('user_id');
+
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
+
             $table->foreignId('checkpoint_id')
                 ->constrained('checkpoints')
                 ->cascadeOnDelete();
+
             $table->timestamps();
         });
     }

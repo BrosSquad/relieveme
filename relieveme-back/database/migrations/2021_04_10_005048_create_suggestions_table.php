@@ -16,9 +16,11 @@ class CreateSuggestionsTable extends Migration
         Schema::create('suggestions', function (Blueprint $table) {
             $table->id();
             $table->string('name', 200)->nullable(false);
+
             $table->foreignId('hazard_id')
                 ->constrained('hazards')
                 ->cascadeOnDelete();
+
             $table->timestamps();
         });
     }
