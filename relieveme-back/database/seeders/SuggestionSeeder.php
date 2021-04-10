@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Hazard;
+use App\Models\Suggestion;
 use Illuminate\Database\Seeder;
 
-class HazardSeeder extends Seeder
+class SuggestionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class HazardSeeder extends Seeder
      */
     public function run()
     {
-        Hazard::factory(10)->create();
+        Suggestion::factory(10)->create();
     }
 }

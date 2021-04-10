@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Transport;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use MStaack\LaravelPostgis\Geometries\Point;
 
 class TransportFactory extends Factory
 {
