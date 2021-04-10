@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Actions;
+use App\Events\TransportEvent;
 use App\Models\Transport;
 use MStaack\LaravelPostgis\Geometries\Point;
 use Illuminate\Support\Collection;
@@ -32,7 +34,7 @@ class TransportService
             $location['longitude'],
         );
 
-        return Transport::query()
+        $transport = Transport::query()
             ->create(
                 [
                     'location' => $point,
@@ -41,6 +43,10 @@ class TransportService
                     'description' => $description,
                 ]
             );
+
+        event(new TransportEvent($transport, Actions::CREATED));
+
+        return $transport;
     }
 
     public function update(int $id, array $data): bool
@@ -57,7 +63,7 @@ class TransportService
 
         $transport = Transport::query()->findOrFail($id);
 
-        return $transport->update(
+        $updated = $transport->update(
             [
                 'location' => $point,
                 'type' => $type,
@@ -65,11 +71,17 @@ class TransportService
                 'description' => $description,
             ]
         );
+
+        event(new TransportEvent($transport, Actions::UPDATED));
+
+        return $updated;
     }
 
     public function delete(int $id)
     {
         $transport = Transport::query()->findOrFail($id);
+
+        event(new TransportEvent($transport, Actions::DELETED));
 
         return $transport->delete();
     }
