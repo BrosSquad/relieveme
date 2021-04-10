@@ -72,4 +72,9 @@ class User extends Authenticatable
         return $this->hasMany(UserLocationHistory::class);
     }
 
+    public function checks(): HasMany
+    {
+        return $this->hasMany(Check::class, 'user_id', 'id');
+    }
+
 }
