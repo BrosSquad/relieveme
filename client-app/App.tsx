@@ -4,8 +4,8 @@ import React from 'react'
 import 'react-native-gesture-handler'
 import { enableScreens } from 'react-native-screens'
 import AppNavigator from './src/AppNavigator'
-import registerForPushNotificationsAsync from './src/registerForPushNotificationsAsync'
-import registerUserLocation from './src/registerUserLocation'
+import registerForPushNotificationsAsync from './src/utils/registerForPushNotificationsAsync'
+import registerUserLocation from './src/utils/registerUserLocation'
 
 enableScreens()
 

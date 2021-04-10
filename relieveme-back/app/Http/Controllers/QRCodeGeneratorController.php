@@ -31,7 +31,7 @@ class QRCodeGeneratorController extends Controller
         } catch (Exception $e) {
             return response()->json(
                 [
-                    'error' => 'QR code generation failed, we apologize for the inconvinience.'
+                    'message' => 'QR code generation failed, we apologize for the inconvinience.'
                 ],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );

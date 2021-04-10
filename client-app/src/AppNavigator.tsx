@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import AlertScreen from './screens/AlertScreen'
+import HazardMap from './screens/HazardMap'
 import WelcomeScreen from './screens/WelcomeScreen'
 
 const Stack = createStackNavigator()
@@ -20,6 +21,13 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen
           name="Alert"
           component={AlertScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="HazardMap"
+          component={HazardMap}
           options={{
             headerShown: false,
           }}
