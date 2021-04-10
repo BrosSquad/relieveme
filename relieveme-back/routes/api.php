@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckpointsController;
 use App\Http\Controllers\QRCodeGeneratorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/generateQR', [QRCodeGeneratorController::class, 'generate']);
+Route::apiResource('checkpoints', CheckpointsController::class);
