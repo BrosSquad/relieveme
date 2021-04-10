@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\BlocadeController;
-use App\Http\Controllers\CheckpointsController;
-use App\Http\Controllers\HazardController;
-use App\Http\Controllers\MapController;
-use App\Http\Controllers\QRCodeGeneratorController;
-use App\Http\Controllers\SuggestionsController;
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\HazardController;
+use App\Http\Controllers\CheckController;
+use App\Http\Controllers\BlocadeController;
+use App\Http\Controllers\CheckpointsController;
+use App\Http\Controllers\MapController;
+use App\Http\Controllers\QRCodeGeneratorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +31,8 @@ Route::middleware('auth:api')->get(
 Route::get('/generateQR', [QRCodeGeneratorController::class, 'generate']);
 Route::apiResource('suggestions', SuggestionsController::class);
 Route::apiResource('checkpoints', CheckpointsController::class);
+Route::post('/checkIn', [CheckController::class, 'checkIn']);
+Route::delete('/checkOut', [CheckController::class, 'checkOut']);
 Route::apiResource('blocades', BlocadeController::class)->except(['update']);
 Route::post('/register', [UserController::class, 'create']);
 

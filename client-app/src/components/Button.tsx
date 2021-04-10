@@ -14,7 +14,14 @@ type Props = {
 const Button: React.FC<Props & TouchableOpacityProps> = (props) => {
   const { children, dark, ...rest } = props
   return (
-    <TouchableOpacity {...rest} style={[styles.container, props.style]}>
+    <TouchableOpacity
+      {...rest}
+      style={[
+        styles.container,
+        props.style,
+        dark ? { borderColor: colors.white } : { borderColor: colors.black },
+      ]}
+    >
       <Text
         style={
           dark ? typography.bodyEmphasizedWhite : typography.bodyEmphasized
@@ -30,7 +37,6 @@ const styles = StyleSheet.create({
   container: {
     height: 48,
     borderRadius: 100,
-    borderColor: colors.white,
     borderWidth: 3,
     alignItems: 'center',
     justifyContent: 'center',
