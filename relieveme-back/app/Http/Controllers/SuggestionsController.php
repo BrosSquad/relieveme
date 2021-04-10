@@ -62,7 +62,7 @@ class SuggestionsController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(
                 [
-                    'error' => 'The requested resource could not be found.'
+                    'message' => 'The requested resource could not be found.'
                 ],
                 Response::HTTP_NOT_FOUND
             );
@@ -91,7 +91,7 @@ class SuggestionsController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(
                 [
-                    'error' => 'The requested resource could not be found.',
+                    'message' => 'The requested resource could not be found.',
                 ],
                 Response::HTTP_NOT_FOUND
             );
@@ -111,7 +111,7 @@ class SuggestionsController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(
                 [
-                    'error' => 'The requested resource could not be found.',
+                    'message' => 'The requested resource could not be found.',
                 ],
                 Response::HTTP_NOT_FOUND
             );
