@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\UserLocationHistory;
+use GeoJson\Geometry\Point;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserLocationHistoryFactory extends Factory
@@ -19,10 +21,24 @@ class UserLocationHistoryFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
+        $ids = User::all('id')->pluck('id');
+
         return [
-            //
+            'user_id' => $this->faker->randomElement($ids->toArray()),
+            'location' => $this->faker->randomElement(
+                [
+                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
+                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
+                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
+                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
+                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
+                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
+                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
+                    new Point([$this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)]),
+                ]
+            )
         ];
     }
 }
