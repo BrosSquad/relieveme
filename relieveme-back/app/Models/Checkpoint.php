@@ -16,7 +16,7 @@ class Checkpoint extends Model
     protected $fillable = [
         'name',
         'location',
-        'radius',
+        'capacity',
         'phone_numbers',
         'description',
         'people_count'

@@ -196,6 +196,7 @@ class CheckpointFactory extends Factory
                     ),
                 ],
             ),
+            'capacity' => rand(100, 500),
             'description' => $this->faker->paragraph(2),
         ];
     }
