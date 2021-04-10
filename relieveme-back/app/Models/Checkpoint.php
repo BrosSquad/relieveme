@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use MStaack\LaravelPostgis\Eloquent\Builder;
 use MStaack\LaravelPostgis\Eloquent\PostgisTrait;
@@ -86,5 +87,10 @@ class Checkpoint extends Model
     public function helps(): BelongsToMany
     {
         return $this->belongsToMany(Help::class, 'checkpoint_helps');
+    }
+
+    public function checks(): HasMany
+    {
+        return $this->hasMany(Check::class, 'checkpoint_id', 'id');
     }
 }

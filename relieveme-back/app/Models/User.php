@@ -76,4 +76,10 @@ class User extends Authenticatable
     {
         return (string)$this->id;
     }
+
+    public function checks(): HasMany
+    {
+        return $this->hasMany(Check::class, 'user_id', 'id');
+    }
+
 }
