@@ -15,7 +15,6 @@ class UserLocationHistorySeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
         UserLocationHistory::factory(10)->create();
     }
 }

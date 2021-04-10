@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Check;
+use App\Models\Checkpoint;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CheckFactory extends Factory
@@ -21,12 +23,13 @@ class CheckFactory extends Factory
      */
     public function definition()
     {
-        $status = [-1, 1];
+        $userIds = User::all('id')->pluck('id')->toArray();
+        $checkpointIds = Checkpoint::all('id')->pluck('id')->toArray();
 
         return [
-            'status' => $status[rand(0, 1)],
-            'user_id' => rand(1, 10),
-            'checkpoint_id' => rand(1, 10)
+            'status' => $this->faker->randomElement([-1, 1]),
+            'user_id' => $this->faker->randomElement($userIds),
+            'checkpoint_id' => $this->faker->randomElement($checkpointIds)
         ];
     }
 }
