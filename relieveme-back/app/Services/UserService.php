@@ -30,7 +30,7 @@ class UserService
                 $expo = new Expo(['token' => $expoToken]);
 
                 $user->locations()->save($userLocation);
-                $user->toknes()->save($expo);
+                $user->tokens()->save($expo);
 
                 return $user;
             }
