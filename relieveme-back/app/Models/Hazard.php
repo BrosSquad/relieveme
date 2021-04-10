@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use MStaack\LaravelPostgis\Eloquent\PostgisTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,4 +32,9 @@ class Hazard extends Model
             'srid' => 4326
         ],
     ];
+
+    public function suggestions(): HasMany
+    {
+        return $this->hasMany(Suggestion::class, 'hazard_id', 'id');
+    }
 }
