@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TransportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -34,6 +35,7 @@ Route::apiResource('checkpoints', CheckpointsController::class);
 Route::post('/checkIn', [CheckController::class, 'checkIn']);
 Route::delete('/checkOut', [CheckController::class, 'checkOut']);
 Route::apiResource('blocades', BlocadeController::class)->except(['update']);
+Route::apiResource('transport', TransportController::class);
 Route::post('/register', [UserController::class, 'create']);
 
 

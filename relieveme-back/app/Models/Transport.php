@@ -40,6 +40,10 @@ class Transport extends Model
 {
     use HasFactory, PostgisTrait;
 
+    public const TYPE_BUS = 'autobus';
+    public const TYPE_VAN = 'kombi';
+    public const TYPE_HELICOPTER = 'helikopter';
+
     /**
      * @var string[]
      */
