@@ -26,7 +26,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Help whereId(int $value)
  * @method static Builder|Help whereName(string $value)
  * @method static Builder|Help whereUpdatedAt(Carbon | null $value)
- *
  * @mixin Eloquent
  */
 class Help extends Model

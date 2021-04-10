@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Database\Factories\HazardFactory;
 use Eloquent;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Carbon;
 use MStaack\LaravelPostgis\Eloquent\Builder;
@@ -35,8 +36,10 @@ use MStaack\LaravelPostgis\Geometries\Point;
  * @method static Builder|Hazard whereLocation(Point $value)
  * @method static Builder|Hazard whereRadius(int $value)
  * @method static Builder|Hazard whereUpdatedAt(Carbon $value)
- *
  * @mixin Eloquent
+ *
+ * @property-read Collection|Suggestion[] $suggestions
+ * @property-read int|null $suggestions_count
  */
 class Hazard extends Model
 {
