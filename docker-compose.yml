@@ -4,6 +4,8 @@ services:
         build:
             context: ./relieveme-back
             dockerfile: ./Dockerfile
+            args:
+                USER: $USER
         networks:
             - net
         links:
