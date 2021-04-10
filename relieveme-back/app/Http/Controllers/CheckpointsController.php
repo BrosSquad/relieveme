@@ -70,7 +70,6 @@ class CheckpointsController extends Controller
                 Response::HTTP_CREATED
             );
         } catch (QueryException $exception) {
-            dd($exception->getMessage());
             return \response()->json([
                 'message' => 'Failed to insert in database.',
             ]);

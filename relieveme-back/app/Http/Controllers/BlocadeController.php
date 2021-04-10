@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class BlocadeController extends Controller
 {
+
+    public function __construct(private BlocadeService $blocadeService) {}
+
     /**
      * Display a listing of the resource.
      *

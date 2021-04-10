@@ -36,6 +36,7 @@ class BlocadeFactory extends Factory
                     new Point($this->faker->randomFloat(6, 44, 45), $this->faker->randomFloat(6, 21, 22)),
                 ]
             ),
+            'hazard_id' => rand(1, 10)
         ];
     }
 }
