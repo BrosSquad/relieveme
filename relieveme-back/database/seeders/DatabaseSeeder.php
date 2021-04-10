@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
                 HazardSeeder::class,
                 SuggestionSeeder::class,
                 CheckSeeder::class,
-                CheckpointHelpSeeder::class
+                CheckpointHelpSeeder::class,
+                BlocadeSeeder::class
             ]
         );
     }
