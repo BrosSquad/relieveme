@@ -72,4 +72,8 @@ class User extends Authenticatable
         return $this->hasMany(UserLocationHistory::class);
     }
 
+    public function routeNotificationForExpoPushNotifications()
+    {
+        return (string)$this->id;
+    }
 }

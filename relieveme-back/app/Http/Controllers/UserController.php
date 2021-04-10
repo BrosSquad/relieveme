@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
+use App\Models\Hazard;
+use App\Models\User;
+use App\Notifications\NotifyUserAboutHazard;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 
@@ -13,6 +16,18 @@ class UserController extends Controller
     public function __construct(private UserService $userService)
     {
     }
+
+    public function push()
+    {
+        $user = User::where('identifier', 'Hvir0NMf20zqOrbAo9NiQnARYBaeI2gK')->first();
+
+        $hazard = Hazard::factory()->create();
+
+        $notification = (new NotifyUserAboutHazard($hazard));
+
+        $user->notify($notification);
+    }
+
 
     public function create(CreateUserRequest $request): JsonResponse
     {

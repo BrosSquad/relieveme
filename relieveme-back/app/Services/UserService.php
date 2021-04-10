@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\Expo;
 use App\Models\User;
 use App\Models\UserLocationHistory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use MStaack\LaravelPostgis\Geometries\Point;
+use NotificationChannels\ExpoPushNotifications\ExpoChannel;
 
 class UserService
 {
+    public function __construct(private ExpoChannel $expoChannel)
+    {
+    }
+
     public function createUser(array $data): User
     {
         $location = $data['location'];
@@ -27,10 +31,9 @@ class UserService
                     ]
                 );
 
-                $expo = new Expo(['token' => $expoToken]);
-
                 $user->locations()->save($userLocation);
-                $user->tokens()->save($expo);
+
+                $this->expoChannel->expo->subscribe($user->id, $expoToken);
 
                 return $user;
             }
