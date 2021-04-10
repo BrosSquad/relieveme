@@ -21,7 +21,7 @@ use MStaack\LaravelPostgis\Geometries\Point;
  *
  * @property int $id
  * @property string $name
- * @property mixed $location
+ * @property Point $location
  * @property int $capacity
  * @property string $phone_numbers
  * @property string|null $description

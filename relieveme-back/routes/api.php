@@ -7,7 +7,7 @@ use App\Http\Controllers\HazardController;
 use App\Http\Controllers\CheckController;
 use App\Http\Controllers\BlocadeController;
 use App\Http\Controllers\CheckpointsController;
-use App\Http\Controllers\SuggestionsController;
+use App\Http\Controllers\MapController;
 use App\Http\Controllers\QRCodeGeneratorController;
 
 /*
@@ -47,3 +47,5 @@ Route::prefix('/hazards')->group(
             ->where('id', '^\d+$');
     }
 );
+
+Route::get('/map-data/{hazard_id}', [MapController::class, 'search']);
