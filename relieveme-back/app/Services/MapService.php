@@ -25,7 +25,7 @@ class MapService
      */
     public function getMapData(int $hazard_id): array
     {
-        $key = "hazard-{$hazard_id}-map-data";
+        $key = "hazard-$hazard_id-map-data";
 
         $cached = $this->getCachedData($key);
 
