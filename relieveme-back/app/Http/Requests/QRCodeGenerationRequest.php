@@ -41,7 +41,7 @@ class QRCodeGenerationRequest extends FormRequest
                 'bail',
                 'required',
                 'numeric',
-                // TODO: exists:checkpoints
+                'exists:checkpoints,id'
             ],
         ];
     }
