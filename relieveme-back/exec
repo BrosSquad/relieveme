@@ -2,5 +2,5 @@
 LOCAL=$PWD
 PARENT="$(dirname "$LOCAL")"
 SSH=$HOME
-docker run  -ti --network relieveme_net --rm -p 8080:8080 -p 9501:9501 -v ${PARENT}:/var/www -v ${SSH}/.ssh:/root/.ssh -w /var/www/relieveme-back brossquad/php-dev:8.0-1.0.5 $@
+docker run -ti --user "$(id -u):$(id -g)" --network relieveme_net --rm -p 8080:8080 -p 9501:9501 -v ${PARENT}:/var/www -v ${SSH}/.ssh:/root/.ssh -w /var/www/relieveme-back relieveme_app:latest $@
 
