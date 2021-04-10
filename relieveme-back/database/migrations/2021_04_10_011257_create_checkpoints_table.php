@@ -13,18 +13,23 @@ class CreateCheckpointsTable extends Migration
      */
     public function up()
     {
-        Schema::create('checkpoints', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 200)
-                ->nullable(false)
-                ->unique();
-            // $table->geometry('geolocation');
-            $table->integer('capacity')->nullable(true);
-            $table->string('phone_numbers');
-            $table->string('description', 200)->nullable(true);
-            $table->integer('people_count')->default(0);
-            $table->timestamps();
-        });
+        Schema::create(
+            'checkpoints',
+            function (Blueprint $table) {
+                $table->id();
+                $table->string('name', 200)
+                    ->nullable(false)
+                    ->unique();
+                $table->point('location')->nullable(false);
+                $table->integer('capacity')->nullable(true);
+                $table->string('phone_numbers');
+                $table->string('description', 200)->nullable(true);
+                $table->integer('people_count')->default(0);
+                $table->timestamps();
+                $table->spatialIndex('location');
+            }
+
+        );
     }
 
     /**

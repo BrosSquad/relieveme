@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use MStaack\LaravelPostgis\Schema\Blueprint;
 
 class CreateTransportsTable extends Migration
 {
@@ -13,16 +13,18 @@ class CreateTransportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transports', function (Blueprint $table) {
-            $table->id();
-            // TODO: Should we go with geometry or point?
-//            $table->geometry('geolocation');
-            $table->enum('type', ['helikopter', 'kombi', 'autobus']);
-            $table->string('phone_numbers');
-            $table->string('description', 200)->nullable(true);
-            // TODO: Add postgix index
-            $table->timestamps();
-        });
+        Schema::create(
+            'transports',
+            function (Blueprint $table) {
+                $table->id();
+                $table->point('location')->nullable(false);
+                $table->enum('type', ['helikopter', 'kombi', 'autobus']);
+                $table->string('phone_numbers');
+                $table->string('description', 200)->nullable(true);
+                $table->timestamps();
+                $table->spatialIndex('location');
+            }
+        );
     }
 
     /**
