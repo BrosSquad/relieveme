@@ -1,11 +1,8 @@
 import * as Location from 'expo-location'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Circle, Marker } from 'react-native-maps'
-import BlockadeIcon from '../../assets/block.svg'
-import CheckpointIcon from '../../assets/checkpoint.svg'
-import TransportIcon from '../../assets/transport.svg'
-import { colors } from '../theme'
+import { StyleSheet, Text, View } from 'react-native'
+import { Callout, Circle, Marker } from 'react-native-maps'
+import { colors, typography } from '../theme'
 
 const MARKER_SIZE = 72
 const ICON_SIZE = { width: MARKER_SIZE * 0.5, height: MARKER_SIZE * 0.5 }
@@ -28,7 +25,36 @@ const containerStyle = (color: keyof typeof colors = 'midGray') => {
 }
 const styles = StyleSheet.create({
   checkpointIcon: { marginLeft: 4 },
+  calloutContainer: {
+    maxWidth: 150,
+  },
+  calloutTitle: {
+    textAlign: 'center',
+    marginBottom: 3,
+  },
+  calloutText: {
+    textAlign: 'center',
+  },
 })
+
+const useCallout = () => {
+  const ref = React.useRef<Marker>(null)
+
+  const [isCalloutVisible, setCalloutVisible] = React.useState(false)
+  const toggle = () => setCalloutVisible((prev) => !prev)
+
+  React.useEffect(() => {
+    if (ref.current) {
+      isCalloutVisible ? ref.current.hideCallout() : ref.current.showCallout()
+    }
+  }, [isCalloutVisible])
+
+  return {
+    ref,
+    toggle,
+    isCalloutVisible,
+  }
+}
 
 const MeMarker: React.FC<{ location: Location.LocationObject }> = ({
   location,
@@ -44,18 +70,35 @@ const MeMarker: React.FC<{ location: Location.LocationObject }> = ({
 type TransportMarkerProps = {
   location: Location.LocationObject
 }
-const TransportMarker: React.FC<TransportMarkerProps> = ({ location }) => (
-  <Marker
-    coordinate={{
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    }}
-  >
-    <View style={containerStyle()}>
-      <TransportIcon {...ICON_SIZE} />
-    </View>
-  </Marker>
-)
+const TransportMarker: React.FC<TransportMarkerProps> = ({ location }) => {
+  const { ref, toggle } = useCallout()
+
+  return (
+    <Marker
+      ref={ref}
+      onPress={toggle}
+      image={require('../../assets/pin-transport.png')}
+      coordinate={{
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      }}
+    >
+      <Callout>
+        <View style={styles.calloutContainer}>
+          <Text style={[typography.bodyEmphasized, styles.calloutTitle]}>
+            Vojni helikopter
+          </Text>
+          <Text style={[typography.subhead, styles.calloutText]}>
+            20:00 - 20:15
+          </Text>
+          <Text style={[typography.subhead, styles.calloutText]}>
+            Kod ulaza u park
+          </Text>
+        </View>
+      </Callout>
+    </Marker>
+  )
+}
 
 type CheckpointMarkerProps = {
   location: Location.LocationObject
@@ -67,45 +110,64 @@ const CheckpointMarker: React.FC<CheckpointMarkerProps> = ({
   people_count,
   capacity,
 }) => {
-  let color: keyof typeof colors = 'midGray'
-
-  const occupancy = people_count / capacity
-  const inRange = (range: [number, number]) =>
-    occupancy >= range[0] && occupancy <= range[1]
-
-  if (occupancy > 0.9) color = 'red'
-  if (inRange([0.71, 0.9])) color = 'orange'
-  if (inRange([0.4, 0.7])) color = 'yellow'
-  if (occupancy < 0.4) color = 'green'
+  const { ref, toggle } = useCallout()
 
   return (
     <Marker
+      ref={ref}
+      onPress={toggle}
+      image={require('../../assets/pin-checkpoint.png')}
       coordinate={{
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       }}
     >
-      <View style={containerStyle(color)}>
-        <CheckpointIcon {...ICON_SIZE} style={styles.checkpointIcon} />
-      </View>
+      <Callout>
+        <View style={styles.calloutContainer}>
+          <Text style={[typography.bodyEmphasized, styles.calloutTitle]}>
+            Crveni krst I
+          </Text>
+          <Text style={[typography.subhead, styles.calloutText]}>
+            Skloniste, hrana
+          </Text>
+          <Text style={[typography.subhead, styles.calloutText]}>
+            Zauzeto {people_count} od {capacity} mesta
+          </Text>
+        </View>
+      </Callout>
     </Marker>
   )
 }
 
-const BlockadeMarker: React.FC<{ location: Location.LocationObject }> = ({
-  location,
-}) => (
-  <Marker
-    coordinate={{
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    }}
-  >
-    <View style={containerStyle('yellow')}>
-      <BlockadeIcon {...ICON_SIZE} />
-    </View>
-  </Marker>
-)
+const BlockadeMarker: React.FC<{
+  location: Location.LocationObject
+  description: string
+}> = ({ location, description }) => {
+  const { ref, toggle } = useCallout()
+
+  return (
+    <Marker
+      ref={ref}
+      onPress={toggle}
+      image={require('../../assets/pin-blockade.png')}
+      coordinate={{
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      }}
+    >
+      <Callout>
+        <View style={styles.calloutContainer}>
+          <Text style={[typography.bodyEmphasized, styles.calloutTitle]}>
+            Blokada
+          </Text>
+          <Text style={[typography.subhead, styles.calloutText]}>
+            {description}
+          </Text>
+        </View>
+      </Callout>
+    </Marker>
+  )
+}
 
 type HazardCircleProps = {
   latitude: number

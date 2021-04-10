@@ -78,7 +78,10 @@ const HazardMap: React.FC = () => {
             longitudeDelta: 0.0034,
           }}
         >
-          <MapMarkers.Me location={location} />
+          <MapMarkers.Blockade
+            location={location}
+            description="Urusila se zgrada, put je blokiran u oba smera!"
+          />
         </MapView>
       )}
     </View>
