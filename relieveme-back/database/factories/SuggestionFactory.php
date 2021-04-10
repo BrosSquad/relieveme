@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Hazard;
+use App\Models\Suggestion;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
-class UserFactory extends Factory
+class SuggestionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Suggestion::class;
 
     /**
      * Define the model's default state.
@@ -22,8 +22,11 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $ids = Hazard::all('id')->pluck('id')->toArray();
+
         return [
-            'identifier' => Str::random(32),
+            'name' => $this->faker->name,
+            'hazard_id' => $this->faker->randomElement($ids),
         ];
     }
 }
