@@ -10,6 +10,7 @@ use App\Http\Controllers\BlocadeController;
 use App\Http\Controllers\CheckpointsController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\QRCodeGeneratorController;
+use App\Http\Controllers\SuggestionsController;
 
 /*
 |--------------------------------------------------------------------------

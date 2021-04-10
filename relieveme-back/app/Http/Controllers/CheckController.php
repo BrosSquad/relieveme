@@ -9,7 +9,6 @@ use App\Http\Requests\Checks\CheckOutRequest;
 use App\Services\CheckService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CheckController extends Controller
@@ -42,7 +41,7 @@ class CheckController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(
                 [
-                    'error' => 'The requested resource could not be found.',
+                    'message' => 'The requested resource could not be found.',
                 ],
                 Response::HTTP_NOT_FOUND
             );
@@ -63,7 +62,7 @@ class CheckController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(
                 [
-                    'error' => 'The requested resource could not be found.',
+                    'message' => 'The requested resource could not be found.',
                 ],
                 Response::HTTP_NOT_FOUND
             );
