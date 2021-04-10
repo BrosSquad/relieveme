@@ -21,13 +21,11 @@ class HazardFactory extends Factory
      */
     public function definition()
     {
-        $types = ['poplava', 'zemljotres'];
-
         return [
             'radius_numbers' => $this->faker->numberBetween(500, 1000),
-            'danger' => $types[rand(0, 1)],
+            'danger' => $this->faker->randomElement(['poplava', 'zemljotres']),
             'level' => $this->faker->numberBetween(1, 5),
-            'geolocation' => $this->faker->randomDigit
+            'location' => $this->faker->randomDigit
         ];
     }
 }

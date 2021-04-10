@@ -13,14 +13,16 @@ class CreateHazardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('hazards', function (Blueprint $table) {
-            $table->id();
-            $table->integer('radius_numbers');
-            $table->integer('danger');
-            $table->integer('level');
-            $table->polygon('geolocation');
-            $table->timestamps();
-        });
+        Schema::create(
+            'hazards',
+            function (Blueprint $table) {
+                $table->id();
+                $table->string('danger', 50)->nullable(false);
+                $table->unsignedTinyInteger('level');
+                $table->polygon('location');
+                $table->timestamps();
+            }
+        );
     }
 
     /**
