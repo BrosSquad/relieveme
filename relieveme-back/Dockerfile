@@ -2,7 +2,7 @@ FROM brossquad/php-dev:8.0-1.0.5
 
 WORKDIR /var/www/html
 
-RUN apt install git -y
+RUN apt install git unzip -y
 
 COPY . .
 
