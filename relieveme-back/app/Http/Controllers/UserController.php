@@ -17,18 +17,6 @@ class UserController extends Controller
     {
     }
 
-    public function push()
-    {
-        $user = User::where('identifier', 'Hvir0NMf20zqOrbAo9NiQnARYBaeI2gK')->first();
-
-        $hazard = Hazard::factory()->create();
-
-        $notification = (new NotifyUserAboutHazard($hazard));
-
-        $user->notify($notification);
-    }
-
-
     public function create(CreateUserRequest $request): JsonResponse
     {
         return new JsonResponse(
