@@ -1,27 +1,18 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { SafeAreaView, StatusBar, Text, View } from 'react-native'
 import AlertScreen from './screens/AlertScreen'
-
-const HomeScreen: React.FC = () => (
-  <SafeAreaView>
-    <StatusBar barStyle="dark-content" />
-    <View>
-      <Text>HomeScreen</Text>
-    </View>
-  </SafeAreaView>
-)
+import WelcomeScreen from './screens/WelcomeScreen'
 
 const Stack = createStackNavigator()
 
 const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Alert">
+      <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+          name="Welcome"
+          component={WelcomeScreen}
           options={{
             headerShown: false,
           }}
