@@ -21,8 +21,8 @@ class CreateCheckpointsTable extends Migration
                     ->nullable(false)
                     ->unique();
                 $table->point('location')->nullable(false);
-                $table->integer('capacity')->nullable(true);
-                $table->string('phone_numbers');
+                $table->integer('capacity')->nullable(false);
+                $table->string('phone_numbers')->nullable(false);
                 $table->string('description', 200)->nullable(true);
                 $table->integer('people_count')->default(0);
                 $table->timestamps();
