@@ -14,7 +14,7 @@ class CreateUserLocationHistoryTable extends Migration
     public function up()
     {
         Schema::create(
-            'user_location_history',
+            'user_location_histories',
             function (Blueprint $table) {
                 $table->id();
                 $table->point('location');
