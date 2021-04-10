@@ -4,26 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QRCodeGenerationRequest;
 use App\Services\QRCodeGeneratorService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
-use Illuminate\Validation\Rule;
 
 class QRCodeGeneratorController extends Controller
 {
-    public function generate(Request $request): JsonResponse|Response
+    public function generate(QRCodeGenerationRequest $request): JsonResponse|Response
     {
-        $qrCodeType = $request->validate(
-            [
-                'code_type' => 'bail|required|string|',
-                Rule::in([QRCodeGeneratorService::CHECK_IN, QRCodeGeneratorService::CHECK_OUT]),
-            ]
-        )['code_type'];
+    try {
+            $codeType = $request->validated()['code_type'];
+            $checkpointId = $request->validated()['checkpoint_id'];
 
-        try {
-            $qrCode = QRCodeGeneratorService::generate($qrCodeType);
+            $qrCode = QRCodeGeneratorService::generate($codeType, intval($checkpointId));
 
             return response(
                 $qrCode->getString(),

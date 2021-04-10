@@ -20,16 +20,17 @@ class QRCodeGeneratorService
 
     /**
      * @param string $codeType
+     * @param int $checkpointId
      * @return ResultInterface
      * @throws Exception
      */
-    public static function generate(string $codeType): ResultInterface
+    public static function generate(string $codeType, int $checkpointId): ResultInterface
     {
         $writer = new PngWriter();
 
         $data = match ($codeType) {
-            self::CHECK_IN => '{checkpointId}_' . self::CHECK_IN,
-            self::CHECK_OUT => '{checkpointId}_' . self::CHECK_OUT,
+            self::CHECK_IN => $checkpointId . '_' . self::CHECK_IN,
+            self::CHECK_OUT => $checkpointId . '_' . self::CHECK_OUT,
         };
 
         return $writer->write(

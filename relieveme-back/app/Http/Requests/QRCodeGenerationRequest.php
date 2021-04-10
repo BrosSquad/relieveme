@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Services\QRCodeGeneratorService;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class QRCodeGenerationRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class QRCodeGenerationRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,23 @@ class QRCodeGenerationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'code_type' => [
+                'bail',
+                'required',
+                'string',
+                Rule::in(
+                    [
+                        QRCodeGeneratorService::CHECK_IN,
+                        QRCodeGeneratorService::CHECK_OUT,
+                    ]
+                ),
+            ],
+            'checkpoint_id' => [
+                'bail',
+                'required',
+                'numeric',
+                // TODO: exists:checkpoints
+            ],
         ];
     }
 }
