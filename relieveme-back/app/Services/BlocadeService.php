@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Actions;
+use App\Events\BlocadeEvent;
 use App\Models\Blocade;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -42,14 +44,21 @@ class BlocadeService
      */
     public function createBlocade(array $data): Blocade
     {
-        return Blocade::create([
-            'name' => $data['name'],
-            'location' => new Point(
-                $data['location']['latitude'],
-                $data['location']['longitude']
-            ),
-            'hazard_id' => $data['hazard_id']
-        ]);
+        $blocade = Blocade::create(
+            [
+                'name' => $data['name'],
+                'location' => new Point(
+                    $data['location']['latitude'],
+                    $data['location']['longitude']
+                ),
+                'hazard_id' => $data['hazard_id']
+            ]
+        );
+
+        event(new BlocadeEvent($data['hazard_id'], $blocade, Actions::CREATED));
+
+
+        return $blocade;
     }
 
     /**
@@ -64,6 +73,8 @@ class BlocadeService
     public function deleteBlocade(int $id): bool
     {
         $blocade = Blocade::whereId($id)->firstOrFail();
+
+        event(new BlocadeEvent($blocade->hazard_id, $blocade, Actions::DELETED));
 
         return $blocade->delete();
     }

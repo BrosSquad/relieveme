@@ -51,7 +51,8 @@ class Hazard extends Model
     protected $fillable = [
         'danger',
         'level',
-        'location'
+        'location',
+        'radius'
     ];
 
     /**
