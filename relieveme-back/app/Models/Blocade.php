@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MStaack\LaravelPostgis\Eloquent\PostgisTrait;
 
 class Blocade extends Model
@@ -15,7 +16,8 @@ class Blocade extends Model
      */
     protected $fillable = [
         'name',
-        'location'
+        'location',
+        'hazard_id'
     ];
 
     /**
@@ -34,4 +36,14 @@ class Blocade extends Model
             'srid' => 4326
         ],
     ];
+
+    /**
+     * Get hazard related to Blocade.
+     *
+     * @return BelongsTo
+     */
+    public function hazard(): BelongsTo
+    {
+        return $this->belongsTo(Hazard::class);
+    }
 }

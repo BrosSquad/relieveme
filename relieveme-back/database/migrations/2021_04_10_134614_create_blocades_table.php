@@ -17,6 +17,11 @@ class CreateBlocadesTable extends Migration
             $table->id();
             $table->string('name', 200)->nullable(false);
             $table->point('location')->nullable(false);
+
+            $table->foreignId('hazard_id')
+                ->constrained('hazards')
+                ->cascadeOnDelete();
+
             $table->timestamps();
         });
     }
