@@ -5,6 +5,7 @@ import 'react-native-gesture-handler'
 import { enableScreens } from 'react-native-screens'
 import AppNavigator from './src/AppNavigator'
 import registerForPushNotificationsAsync from './src/registerForPushNotificationsAsync'
+import registerUserLocation from './src/registerUserLocation'
 
 enableScreens()
 
@@ -25,6 +26,7 @@ export default function App() {
   const notificationListener = React.useRef<Subscription>()
   const responseListener = React.useRef<Subscription>()
 
+  // Setup notifications
   React.useEffect(() => {
     registerForPushNotificationsAsync().then((token) => setExpoPushToken(token))
 
@@ -48,6 +50,10 @@ export default function App() {
         Notifications.removeNotificationSubscription(responseListener.current)
       }
     }
+  }, [])
+
+  React.useEffect(() => {
+    registerUserLocation()
   }, [])
 
   return <AppNavigator />
