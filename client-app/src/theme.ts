@@ -1,8 +1,5 @@
-import { iOSUIKit } from 'react-native-typography'
+import { iOSColors, iOSUIKit } from 'react-native-typography'
 
 export const typography = iOSUIKit
 
-export const colors = {
-  red: '#D73939',
-  white: '#fff',
-} as const
+export const colors = iOSColors
