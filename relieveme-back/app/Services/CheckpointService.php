@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Actions;
+use App\Events\CheckpointEvent;
 use App\Models\Checkpoint;
 use Illuminate\Database\Eloquent\Collection;
 use MStaack\LaravelPostgis\Geometries\Point;
@@ -45,13 +47,19 @@ class CheckpointService
 
         $data['location'] = $point;
 
-        return Checkpoint::create([
-            'name' => $data['name'],
-            'location' => $point,
-            'capacity' => $data['capacity'],
-            'phone_numbers' => $data['phone_numbers'],
-            'description' => array_key_exists('description', $data),
-        ]);
+        $checkpoint = Checkpoint::create(
+            [
+                'name' => $data['name'],
+                'location' => $point,
+                'capacity' => $data['capacity'],
+                'phone_numbers' => $data['phone_numbers'],
+                'description' => array_key_exists('description', $data),
+            ]
+        );
+
+        event(new CheckpointEvent($checkpoint, Actions::CREATED));
+
+        return $checkpoint;
     }
 
     /**
@@ -67,6 +75,8 @@ class CheckpointService
     {
         /** @var Checkpoint $checkpoint */
         $checkpoint = Checkpoint::findOrFail($id);
+
+        event(new CheckpointEvent($checkpoint, Actions::DELETED));
 
         return $checkpoint->delete();
     }
