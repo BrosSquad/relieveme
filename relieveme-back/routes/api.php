@@ -1,14 +1,14 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\HazardController;
 use App\Http\Controllers\CheckController;
 use App\Http\Controllers\BlocadeController;
 use App\Http\Controllers\CheckpointsController;
-use App\Http\Controllers\HazardController;
-use App\Http\Controllers\QRCodeGeneratorController;
 use App\Http\Controllers\SuggestionsController;
-use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\QRCodeGeneratorController;
 
 /*
 |--------------------------------------------------------------------------

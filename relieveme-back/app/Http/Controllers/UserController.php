@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
+use App\Models\Hazard;
+use App\Models\User;
+use App\Notifications\NotifyUserAboutHazard;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 
