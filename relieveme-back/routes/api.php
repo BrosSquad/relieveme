@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlocadeController;
 use App\Http\Controllers\CheckpointsController;
 use App\Http\Controllers\QRCodeGeneratorController;
 use App\Http\Controllers\SuggestionsController;
@@ -25,4 +26,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/generateQR', [QRCodeGeneratorController::class, 'generate']);
 Route::apiResource('suggestions', SuggestionsController::class);
 Route::apiResource('checkpoints', CheckpointsController::class);
+Route::apiResource('blocades', BlocadeController::class)->except(['update']);
 Route::post('/register', [UserController::class, 'create']);
