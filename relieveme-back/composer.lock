@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed269b9784fd377682f5cf842de05906",
+    "content-hash": "811cb00b3fe1ebfe1a21c1c32e11117a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1697,6 +1697,70 @@
                 "source": "https://github.com/laravel/horizon/tree/v5.7.5"
             },
             "time": "2021-04-06T14:17:52+00:00"
+        },
+        {
+            "name": "laravel/telescope",
+            "version": "v4.4.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/telescope.git",
+                "reference": "45c7420f222d8ee1ffca4424afdf07f7c6a2fe91"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/45c7420f222d8ee1ffca4424afdf07f7c6a2fe91",
+                "reference": "45c7420f222d8ee1ffca4424afdf07f7c6a2fe91",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "laravel/framework": "^8.29",
+                "php": "^7.3|^8.0",
+                "symfony/var-dumper": "^5.0"
+            },
+            "require-dev": {
+                "ext-gd": "*",
+                "orchestra/testbench": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Telescope\\TelescopeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Telescope\\": "src/",
+                    "Laravel\\Telescope\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                },
+                {
+                    "name": "Mohamed Said",
+                    "email": "mohamed@laravel.com"
+                }
+            ],
+            "description": "An elegant debug assistant for the Laravel framework.",
+            "keywords": [
+                "debugging",
+                "laravel",
+                "monitoring"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/telescope/issues",
+                "source": "https://github.com/laravel/telescope/tree/v4.4.8"
+            },
+            "time": "2021-04-06T20:46:24+00:00"
         },
         {
             "name": "laravel/tinker",
