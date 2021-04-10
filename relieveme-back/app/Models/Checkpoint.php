@@ -86,7 +86,7 @@ class Checkpoint extends Model
      */
     public function helps(): BelongsToMany
     {
-        return $this->belongsToMany(Help::class, 'checkpoint_helps');
+        return $this->belongsToMany(Help::class, 'checkpoint_help');
     }
 
     public function checks(): HasMany
