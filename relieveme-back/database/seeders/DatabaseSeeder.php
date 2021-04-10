@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
             TransportTableSeeder::class,
             HazardSeeder::class,
             SuggestionSeeder::class,
-            CheckSeeder::class
+            CheckSeeder::class,
+            HelpSeeder::class,
+            CheckpointHelpSeeder::class
         ]);
     }
 }
