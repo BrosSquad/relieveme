@@ -28,7 +28,6 @@ class CreateCheckpointsTable extends Migration
                 $table->timestamps();
                 $table->spatialIndex('location');
             }
-
         );
     }
 

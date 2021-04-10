@@ -13,16 +13,18 @@ class CreateUserLocationHistoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_location_history', function (Blueprint $table) {
-            $table->id();
-            //$table->geometry('geolocation');
+        Schema::create(
+            'user_location_history',
+            function (Blueprint $table) {
+                $table->id();
+                $table->point('location');
+                $table->foreignId('user_id')
+                    ->constrained('users')
+                    ->cascadeOnDelete();
 
-            $table->foreignId('user_id')
-                ->constrained('users')
-                ->cascadeOnDelete();
-
-            $table->timestamps();
-        });
+                $table->timestamps();
+            }
+        );
     }
 
     /**
