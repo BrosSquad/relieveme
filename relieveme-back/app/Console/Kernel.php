@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console;
 
+use App\Console\Commands\CalculatePeopleCountInCheckPoints;
 use App\Console\Commands\DeleteUserLocationHistory;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -27,7 +30,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command(DeleteUserLocationHistory::class)
             ->everyFiveMinutes();
-        // $schedule->command('inspire')->hourly();
+
+        $schedule->command(CalculatePeopleCountInCheckPoints::class)
+            ->everyMinute();
     }
 
     /**
