@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckController;
 use App\Http\Controllers\CheckpointsController;
 use App\Http\Controllers\QRCodeGeneratorController;
 use App\Http\Controllers\SuggestionsController;
@@ -25,4 +26,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/generateQR', [QRCodeGeneratorController::class, 'generate']);
 Route::apiResource('suggestions', SuggestionsController::class);
 Route::apiResource('checkpoints', CheckpointsController::class);
+Route::post('/checkIn', [CheckController::class, 'checkIn']);
+Route::delete('/checkOut', [CheckController::class, 'checkOut']);
 Route::post('/register', [UserController::class, 'create']);
