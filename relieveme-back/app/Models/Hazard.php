@@ -9,6 +9,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Carbon;
 use MStaack\LaravelPostgis\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use MStaack\LaravelPostgis\Eloquent\PostgisTrait;
 use Illuminate\Database\Eloquent\Model;
 use MStaack\LaravelPostgis\Geometries\Point;
@@ -66,4 +67,9 @@ class Hazard extends Model
             'srid' => 4326
         ],
     ];
+
+    public function suggestions(): HasMany
+    {
+        return $this->hasMany(Suggestion::class, 'hazard_id', 'id');
+    }
 }

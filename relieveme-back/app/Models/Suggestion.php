@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Suggestion
@@ -41,4 +42,9 @@ class Suggestion extends Model
         'name',
         'hazard_id'
     ];
+
+    public function hazard(): BelongsTo
+    {
+        return $this->belongsTo(Hazard::class, 'hazard_id', 'id');
+    }
 }
