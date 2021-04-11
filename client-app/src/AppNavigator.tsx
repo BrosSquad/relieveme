@@ -10,6 +10,7 @@ import { useRegisterUser } from './hooks/useRegisterUser'
 import AlertScreen from './screens/AlertScreen'
 import HazardMap from './screens/HazardMap'
 import QRScanScreen from './screens/QRScanScreen'
+import SafetySuggestionsScreen from './screens/SafetySuggestionsScreen'
 import WelcomeScreen from './screens/WelcomeScreen'
 import getUserLocation from './utils/getUserLocation'
 import registerForPushNotificationsAsync from './utils/registerForPushNotificationsAsync'
@@ -28,6 +29,7 @@ export enum AppRoutes {
   Alert = 'App/Alert',
   HazardMap = 'App/HazardMap',
   QRScan = 'App/QRScan',
+  Suggestions = 'App/Suggestions',
 }
 
 const AppStack = createStackNavigator()
@@ -92,6 +94,10 @@ const AppNavigator: React.FC = () => {
       <AppStack.Screen name={AppRoutes.Alert} component={AlertScreen} />
       <AppStack.Screen name={AppRoutes.HazardMap} component={HazardMap} />
       <AppStack.Screen name={AppRoutes.QRScan} component={QRScanScreen} />
+      <AppStack.Screen
+        name={AppRoutes.Suggestions}
+        component={SafetySuggestionsScreen}
+      />
     </AppStack.Navigator>
   )
 }
