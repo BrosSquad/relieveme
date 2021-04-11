@@ -7,6 +7,7 @@ import DialIcon from '../../assets/dial.svg'
 import { Checkpoint } from '../API'
 import FAB from '../components/FAB'
 import FABContainer from '../components/FABContainer'
+import useRevereseGeocoding from '../hooks/useReverseGeocoding'
 import { colors, typography } from '../theme'
 
 const CheckpointDetailsScreen: React.FC = () => {
@@ -17,7 +18,11 @@ const CheckpointDetailsScreen: React.FC = () => {
     helps,
     people_count,
     phone_number,
+    location: {
+      coordinates: [longitude, latitude],
+    },
   } = params as Checkpoint
+  const { address } = useRevereseGeocoding({ latitude, longitude })
 
   const handleCall = async () => {
     if (Constants.isDevice) {
@@ -30,6 +35,7 @@ const CheckpointDetailsScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
+      <Text style={typography.title3Emphasized}>{address}</Text>
       <Text style={typography.title3Emphasized}>
         Popunjenost: {people_count} / {capacity}
       </Text>
