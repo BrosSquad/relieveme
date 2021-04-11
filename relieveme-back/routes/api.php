@@ -23,32 +23,32 @@ use App\Http\Controllers\SuggestionsController;
 |
 */
 
-Route::middleware('auth:api')->get(
-    '/user',
-    function (Request $request) {
-        return $request->user();
-    }
-);
-
-Route::get('/generateQR', [QRCodeGeneratorController::class, 'generate']);
-Route::apiResource('suggestions', SuggestionsController::class);
-Route::apiResource('checkpoints', CheckpointsController::class);
-Route::post('/checkIn', [CheckController::class, 'checkIn']);
-Route::delete('/checkOut', [CheckController::class, 'checkOut']);
-Route::apiResource('blocades', BlocadeController::class)->except(['update']);
-Route::apiResource('transport', TransportController::class);
-Route::post('/register', [UserController::class, 'create']);
-
-
-Route::prefix('/hazards')->group(
+Route::group(
+    [
+        'middleware' => 'cors',
+    ],
     function () {
-        Route::get('/', [HazardController::class, 'getAll']);
-        Route::get('/{id}', [HazardController::class, 'get'])
+        Route::get('/generateQR', [QRCodeGeneratorController::class, 'generate']);
+        Route::apiResource('suggestions', SuggestionsController::class);
+        Route::apiResource('checkpoints', CheckpointsController::class);
+        Route::post('/checkIn', [CheckController::class, 'checkIn']);
+        Route::delete('/checkOut', [CheckController::class, 'checkOut']);
+        Route::apiResource('blocades', BlocadeController::class)->except(['update']);
+        Route::apiResource('transport', TransportController::class);
+        Route::post('/register', [UserController::class, 'create']);
+
+
+        Route::prefix('/hazards')->group(
+            function () {
+                Route::get('/', [HazardController::class, 'getAll']);
+                Route::get('/{id}', [HazardController::class, 'get'])
             ->where('id', '^\d+$');
-        Route::post('/', [HazardController::class, 'create']);
-        Route::delete('/{id}', [HazardController::class, 'delete'])
+                Route::post('/', [HazardController::class, 'create']);
+                Route::delete('/{id}', [HazardController::class, 'delete'])
             ->where('id', '^\d+$');
+            }
+        );
+
+        Route::get('/map-data/{hazard_id}', [MapController::class, 'search']);
     }
 );
-
-Route::get('/map-data/{hazard_id}', [MapController::class, 'search']);

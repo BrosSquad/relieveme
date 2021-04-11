@@ -26,7 +26,12 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'expo' => 'required',
+            'expo' => [
+                'bail',
+                'required',
+                'string',
+                'unique:expos,token'
+            ],
             'location' => [
                 'lat' => 'required',
                 'lng' => 'required'
