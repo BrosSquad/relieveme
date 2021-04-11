@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Actions;
+use App\Events\CheckpointEvent;
 use App\Models\Check;
 use App\Models\Checkpoint;
 use Illuminate\Console\Command;
@@ -57,6 +59,8 @@ class CalculatePeopleCountInCheckPoints extends Command
 
                     $checkpoint->people_count = $checks;
                     $checkpoint->save();
+
+                    broadcast(new CheckpointEvent($checks, Actions::UPDATED));
                 }
             }
         );
