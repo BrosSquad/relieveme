@@ -39,7 +39,7 @@ class MapService
         $blocades = Blocade::whereHazardId($hazard_id)->first();
 
         $data = [
-            'hazards' => $hazard,
+            'hazard' => $hazard,
             'transports' => $transports,
             'checkpoints' => $checkpoints,
             'blocades' => $blocades
