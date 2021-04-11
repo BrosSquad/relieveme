@@ -13,7 +13,7 @@ export type Checkpoint = {
   name: string
   location: Location
   capacity: number
-  phone_numbers: string[]
+  phone_number: string
   description: string
   people_count: number
   created_at: string
@@ -33,7 +33,7 @@ export type CreateCheckpointPayload = {
   }
   hazard_id: number
   capacity: number
-  phone_numbers: string
+  phone_number: stri
 }
 
 export const createCheckpoint = (payload: CreateCheckpointPayload) => {
@@ -180,7 +180,7 @@ export interface Transport {
   id: number
   location: Location
   type: TransportType
-  phone_numbers: string[]
+  phone_number: string
   description: string
   created_at: string
   updated_at: string
