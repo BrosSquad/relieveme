@@ -3,7 +3,7 @@ import React from 'react'
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import CheckmarkCircleIcon from '../../assets/checkmark-circle.svg'
 import SuggestionsIcon from '../../assets/suggestions.svg'
-import { AppRoutes } from '../AppNavigator'
+import { AppRoutes } from '../AppRoutes'
 import Button from '../components/Button'
 import { colors, typography } from '../theme'
 

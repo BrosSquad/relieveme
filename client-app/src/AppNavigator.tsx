@@ -5,13 +5,16 @@ import * as Location from 'expo-location'
 import * as Notifications from 'expo-notifications'
 import React from 'react'
 import 'react-native-gesture-handler'
+import { AppRoutes } from './AppRoutes'
 import { NotificationPayload, useNotification } from './hooks/useNotification'
 import { useRegisterUser } from './hooks/useRegisterUser'
 import AlertScreen from './screens/AlertScreen'
+import CheckpointDetailsScreen from './screens/CheckpointDetailsScreen'
 import HazardMap from './screens/HazardMap'
 import QRScanScreen from './screens/QRScanScreen'
 import SafetySuggestionsScreen from './screens/SafetySuggestionsScreen'
 import WelcomeScreen from './screens/WelcomeScreen'
+import { typography } from './theme'
 import getUserLocation from './utils/getUserLocation'
 import registerForPushNotificationsAsync from './utils/registerForPushNotificationsAsync'
 
@@ -22,15 +25,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 })
-
-export enum AppRoutes {
-  Root = 'App',
-  Welcome = 'App/Welcome',
-  Alert = 'App/Alert',
-  HazardMap = 'App/HazardMap',
-  QRScan = 'App/QRScan',
-  Suggestions = 'App/Suggestions',
-}
 
 const AppStack = createStackNavigator()
 const AppNavigator: React.FC = () => {
@@ -97,6 +91,16 @@ const AppNavigator: React.FC = () => {
       <AppStack.Screen
         name={AppRoutes.Suggestions}
         component={SafetySuggestionsScreen}
+      />
+      <AppStack.Screen
+        name={AppRoutes.CheckpointDetails}
+        component={CheckpointDetailsScreen}
+        options={({ route }) => ({
+          headerShown: true,
+          headerTitleStyle: typography.title3Emphasized,
+          headerBackTitleStyle: typography.bodyEmphasized,
+          headerTitle: route.params?.name,
+        })}
       />
     </AppStack.Navigator>
   )

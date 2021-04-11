@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import AlertIcon from '../../assets/alert.svg'
-import { AppRoutes } from '../AppNavigator'
+import { AppRoutes } from '../AppRoutes'
 import Button from '../components/Button'
 import { colors, typography } from '../theme'
 
