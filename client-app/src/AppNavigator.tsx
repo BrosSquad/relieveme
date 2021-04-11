@@ -13,6 +13,7 @@ import CheckpointDetailsScreen from './screens/CheckpointDetailsScreen'
 import HazardMap from './screens/HazardMap'
 import QRScanScreen from './screens/QRScanScreen'
 import SafetySuggestionsScreen from './screens/SafetySuggestionsScreen'
+import TransportDetailsScreen from './screens/TransportDetailsScreen'
 import WelcomeScreen from './screens/WelcomeScreen'
 import { typography } from './theme'
 import getUserLocation from './utils/getUserLocation'
@@ -100,6 +101,16 @@ const AppNavigator: React.FC = () => {
           headerTitleStyle: typography.title3Emphasized,
           headerBackTitleStyle: typography.bodyEmphasized,
           headerTitle: route.params?.name,
+        })}
+      />
+      <AppStack.Screen
+        name={AppRoutes.TransportDetails}
+        component={TransportDetailsScreen}
+        options={({ route }) => ({
+          headerShown: true,
+          headerTitleStyle: typography.title3Emphasized,
+          headerBackTitleStyle: typography.bodyEmphasized,
+          headerTitle: route.params?.type,
         })}
       />
     </AppStack.Navigator>
