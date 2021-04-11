@@ -1,9 +1,19 @@
+import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import CheckmarkIcon from '../../assets/checkmark.svg'
+import { AppRoutes } from '../AppNavigator'
+import { useNotification } from '../hooks/useNotification'
 import { colors, typography } from '../theme'
 
 const WelcomeScreen: React.FC = () => {
+  const { hasNotification } = useNotification()
+  const navigation = useNavigation()
+
+  if (hasNotification) {
+    navigation.navigate(AppRoutes.HazardMap)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
@@ -41,9 +51,6 @@ const styles = StyleSheet.create({
   description: {
     textAlign: 'center',
     marginBottom: 12,
-  },
-  button: {
-    marginTop: 64,
   },
 })
 
