@@ -1,0 +1,14 @@
+FROM brossquad/php-dev:8.0-1.0.5
+
+WORKDIR /var/www/html
+
+ARG USER
+
+RUN  useradd -m -s /bin/bash ${USER} &&  apt install git unzip -y
+
+COPY . .
+
+RUN  chmod -R 777 storage \
+    && chmod -R 777 bootstrap
+
+CMD [ "php", "./relieveme-back/artisan", "horizon" ]

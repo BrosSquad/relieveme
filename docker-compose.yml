@@ -21,6 +21,52 @@ services:
             APPLICATION_ENV: development
         volumes:
             - .:/var/www/html/
+    queue:
+        build:
+            context: ./relieveme-back
+            dockerfile: ./Dockerfile-queue
+            args:
+                USER: $USER
+        networks:
+            - net
+        links:
+            - app
+            - nginx
+            - redis
+            - postgres
+        depends_on:
+            - app
+            - nginx
+            - redis
+            - postgres
+        restart: unless-stopped
+        environment:
+            APPLICATION_ENV: development
+        volumes:
+            - .:/var/www/html/
+    scheduler:
+        build:
+            context: ./relieveme-back
+            dockerfile: ./Dockerfile-scheduler
+            args:
+                USER: $USER
+        networks:
+            - net
+        links:
+            - app
+            - nginx
+            - redis
+            - postgres
+        depends_on:
+            - app
+            - nginx
+            - redis
+            - postgres
+        restart: unless-stopped
+        environment:
+            APPLICATION_ENV: development
+        volumes:
+            - .:/var/www/html/
     nginx:
         image: nginx:1.19-alpine
         restart: unless-stopped

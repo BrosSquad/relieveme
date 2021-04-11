@@ -151,7 +151,7 @@ return [
     |
     */
 
-    'memory_limit' => 512,
+    'memory_limit' => 64,
 
     /*
     |--------------------------------------------------------------------------
@@ -167,7 +167,7 @@ return [
     'defaults' => [
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default'],
+            'queue' => ['default', 'listeners'],
             'balance' => 'auto',
             'maxProcesses' => 1,
             'memory' => 128,
