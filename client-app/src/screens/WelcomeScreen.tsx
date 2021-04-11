@@ -3,16 +3,11 @@ import React from 'react'
 import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import CheckmarkIcon from '../../assets/checkmark.svg'
 import { AppRoutes } from '../AppRoutes'
-import { useNotification } from '../hooks/useNotification'
+import Button from '../components/Button'
 import { colors, typography } from '../theme'
 
 const WelcomeScreen: React.FC = () => {
-  const { hasNotification } = useNotification()
   const navigation = useNavigation()
-
-  if (hasNotification) {
-    navigation.navigate(AppRoutes.HazardMap)
-  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,6 +24,9 @@ const WelcomeScreen: React.FC = () => {
           o nepogodama u Vasoj blizini, sada mozete da zatvorite aplikaciju i
           zaboravite da ste je instalirali.
         </Text>
+        <Button onPress={() => navigation.navigate(AppRoutes.Suggestions)}>
+          Dalje
+        </Button>
       </View>
     </SafeAreaView>
   )
