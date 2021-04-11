@@ -29,7 +29,6 @@ class CreateUserRequest extends FormRequest
                 'bail',
                 'required',
                 'string',
-                'unique:expos,token'
             ],
             'location'  => [
                 'bail',
