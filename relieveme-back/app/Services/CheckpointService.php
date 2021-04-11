@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Actions;
-use App\Events\CheckpointEvent;
 use App\Models\Checkpoint;
+use App\Events\CheckpointEvent;
 use Illuminate\Database\Eloquent\Collection;
 use MStaack\LaravelPostgis\Geometries\Point;
 
@@ -57,7 +57,7 @@ class CheckpointService
             ]
         );
 
-        event(new CheckpointEvent($checkpoint, Actions::CREATED));
+        broadcast(new CheckpointEvent($checkpoint, Actions::CREATED));
 
         return $checkpoint;
     }
@@ -76,7 +76,7 @@ class CheckpointService
         /** @var Checkpoint $checkpoint */
         $checkpoint = Checkpoint::findOrFail($id);
 
-        event(new CheckpointEvent($checkpoint, Actions::DELETED));
+        broadcast(new CheckpointEvent($checkpoint, Actions::DELETED));
 
         return $checkpoint->delete();
     }

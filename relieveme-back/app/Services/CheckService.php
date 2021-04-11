@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Actions;
-use App\Events\CheckEvent;
-use App\Models\Check;
 use App\Models\User;
+use App\Models\Check;
+use App\Events\CheckEvent;
 
 class CheckService
 {
@@ -27,7 +27,7 @@ class CheckService
                     ]
                 );
 
-            event(new CheckEvent($checkpointId, Actions::CREATED));
+            broadcast(new CheckEvent($checkpointId, Actions::CREATED));
 
             return $check;
         }
@@ -47,7 +47,7 @@ class CheckService
 
         $deleted = $check->delete();
 
-        event(new CheckEvent($checkpointId, Actions::DELETED));
+        broadcast(new CheckEvent($checkpointId, Actions::DELETED));
 
         return $deleted;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Expo;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -24,18 +25,25 @@ class UserService
 
         return DB::transaction(
             function () use ($location, $expoToken) {
-                $user = User::create(['identifier' => Str::random(32)]);
-                $userLocation = new UserLocationHistory(
-                    [
-                        'location' => new Point($location['lat'], $location['lng']),
-                    ]
-                );
 
-                $user->locations()->save($userLocation);
+                try {
+                    $expo = Expo::query()->where('token', $expoToken)->firstOrFail();
+                    return $expo->user;
+                } catch (\Exception $e) {
 
-                $this->expoChannel->expo->subscribe($user->id, $expoToken);
+                    $user = User::create(['identifier' => Str::random(32)]);
+                    $userLocation = new UserLocationHistory(
+                        [
+                            'location' => new Point($location['lat'], $location['lng']),
+                        ]
+                    );
 
-                return $user;
+                    $user->locations()->save($userLocation);
+
+                    $this->expoChannel->expo->subscribe($user->id, $expoToken);
+
+                    return $user;
+                }
             }
         );
     }
