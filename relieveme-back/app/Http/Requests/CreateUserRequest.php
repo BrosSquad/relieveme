@@ -22,7 +22,6 @@ class CreateUserRequest extends FormRequest
      *
      * @return array
      */
-    #[ArrayShape(['expo' => "string", 'location' => "string[]"])]
     public function rules(): array
     {
         return [
@@ -32,10 +31,21 @@ class CreateUserRequest extends FormRequest
                 'string',
                 'unique:expos,token'
             ],
-            'location' => [
-                'lat' => 'required',
-                'lng' => 'required'
-            ]
+            'location'  => [
+                'bail',
+                'required',
+                'array'
+            ],
+            'location.latitude' => [
+                'bail',
+                'required',
+                'numeric',
+            ],
+            'location.longitude' => [
+                'bail',
+                'required',
+                'numeric',
+            ],
         ];
     }
 }

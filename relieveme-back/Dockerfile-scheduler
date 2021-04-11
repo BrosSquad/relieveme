@@ -11,4 +11,4 @@ COPY . .
 RUN  chmod -R 777 storage \
     && chmod -R 777 bootstrap
 
-CMD [ "php", "./relieveme-back/artisan", "schedule:work" ]
+CMD [ "php", "artisan", "schedule:work" ]

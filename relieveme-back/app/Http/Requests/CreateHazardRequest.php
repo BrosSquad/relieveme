@@ -22,15 +22,25 @@ class CreateHazardRequest extends FormRequest
      *
      * @return array
      */
-    #[ArrayShape(['danger' => "string", 'level' => "string", 'location' => "string[]", 'radius' => "string"])]
     public function rules(): array
     {
         return [
             'danger' => 'required|string|max:50',
             'level' => 'required|min:1|max:5',
-            'location' => [
-                'lat' => 'required',
-                'lng' => 'required'
+            'location'  => [
+                'bail',
+                'required',
+                'array'
+            ],
+            'location.latitude' => [
+                'bail',
+                'required',
+                'numeric',
+            ],
+            'location.longitude' => [
+                'bail',
+                'required',
+                'numeric',
             ],
             'radius' => 'required|numeric'
         ];
