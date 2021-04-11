@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import CheckmarkIcon from '../../assets/checkmark.svg'
-import { AppRoutes } from '../AppNavigator'
+import { AppRoutes } from '../AppRoutes'
 import { useNotification } from '../hooks/useNotification'
 import { colors, typography } from '../theme'
 

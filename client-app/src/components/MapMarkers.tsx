@@ -6,14 +6,19 @@ import useCallout from '../hooks/useMarkerCallout'
 import { colors, typography } from '../theme'
 
 type BaseMarkerProps = {
+  onPress?: () => void
   coordinate: {
     latitude: number
     longitude: number
   }
 }
 
-const MeMarker: React.FC<BaseMarkerProps> = ({ coordinate }) => (
-  <Marker image={require('../../assets/pin-me.png')} coordinate={coordinate} />
+const MeMarker: React.FC<BaseMarkerProps> = ({ coordinate, onPress }) => (
+  <Marker
+    onPress={onPress}
+    image={require('../../assets/pin-me.png')}
+    coordinate={coordinate}
+  />
 )
 
 type TransportMarkerProps = {
@@ -24,13 +29,17 @@ const TransportMarker: React.FC<TransportMarkerProps & BaseMarkerProps> = ({
   coordinate,
   type,
   description,
+  onPress,
 }) => {
   const { ref, toggle } = useCallout()
 
   return (
     <Marker
       ref={ref}
-      onPress={toggle}
+      onPress={() => {
+        toggle()
+        onPress && onPress()
+      }}
       image={require('../../assets/pin-transport.png')}
       coordinate={coordinate}
     >
@@ -60,6 +69,7 @@ const CheckpointMarker: React.FC<CheckpointMarkerProps & BaseMarkerProps> = ({
   coordinate,
   peopleCount,
   helps,
+  onPress,
 }) => {
   const { ref, toggle } = useCallout()
   const helpsText = helps
@@ -70,7 +80,10 @@ const CheckpointMarker: React.FC<CheckpointMarkerProps & BaseMarkerProps> = ({
   return (
     <Marker
       ref={ref}
-      onPress={toggle}
+      onPress={() => {
+        toggle()
+        onPress && onPress()
+      }}
       image={require('../../assets/pin-checkpoint.png')}
       coordinate={coordinate}
     >
