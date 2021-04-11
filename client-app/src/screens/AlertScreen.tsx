@@ -4,10 +4,16 @@ import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import AlertIcon from '../../assets/alert.svg'
 import { AppRoutes } from '../AppRoutes'
 import Button from '../components/Button'
+import useHazardMapSubscription from '../hooks/useHazardMapSubscription'
 import { colors, typography } from '../theme'
 
 const AlertScreen: React.FC = () => {
+  const { loadMapData } = useHazardMapSubscription()
   const navigation = useNavigation()
+
+  React.useEffect(() => {
+    loadMapData()
+  }, [loadMapData])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -15,7 +21,7 @@ const AlertScreen: React.FC = () => {
       <Text style={typography.largeTitleEmphasizedWhite}>Upozorenje</Text>
       <View style={styles.descriptionContainer}>
         <Text style={[typography.calloutWhite, styles.description]}>
-          U velikoj ste opasnosti od poplave u vasoj neposrednoj okolini!
+          U velikoj ste opasnosti u vasoj neposrednoj okolini!
         </Text>
         <Button
           dark
