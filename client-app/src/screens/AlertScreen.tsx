@@ -20,7 +20,7 @@ const AlertScreen: React.FC = () => {
         <Button
           dark
           style={styles.button}
-          onPress={() => navigation.navigate(AppRoutes.HazardMap)}
+          onPress={() => navigation.navigate(AppRoutes.Suggestions)}
         >
           Dalje
         </Button>
