@@ -187,9 +187,9 @@ export interface Transport {
 }
 
 export enum TransportType {
-  Autobus = 'autobus',
-  Helikopter = 'helikopter',
-  Kombi = 'kombi',
+  Autobus = 'Autobus',
+  Helikopter = 'Helikopter',
+  Kombi = 'Kombi',
 }
 
 export const getMapData = async (
