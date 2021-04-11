@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Actions;
-use App\Events\TransportEvent;
 use App\Models\Transport;
-use MStaack\LaravelPostgis\Geometries\Point;
+use App\Events\TransportEvent;
 use Illuminate\Support\Collection;
+use MStaack\LaravelPostgis\Geometries\Point;
 
 class TransportService
 {
@@ -44,7 +44,7 @@ class TransportService
                 ]
             );
 
-        event(new TransportEvent($transport, Actions::CREATED));
+        broadcast(new TransportEvent($transport, Actions::CREATED));
 
         return $transport;
     }
@@ -72,7 +72,7 @@ class TransportService
             ]
         );
 
-        event(new TransportEvent($transport, Actions::UPDATED));
+        broadcast(new TransportEvent($transport, Actions::UPDATED));
 
         return $updated;
     }
@@ -81,7 +81,7 @@ class TransportService
     {
         $transport = Transport::query()->findOrFail($id);
 
-        event(new TransportEvent($transport, Actions::DELETED));
+        broadcast(new TransportEvent($transport, Actions::DELETED));
 
         return $transport->delete();
     }
