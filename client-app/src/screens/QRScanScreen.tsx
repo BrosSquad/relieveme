@@ -1,15 +1,16 @@
+import { useNavigation } from '@react-navigation/core'
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner'
 import React from 'react'
 import { StatusBar, StyleSheet, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Svg, { Rect } from 'react-native-svg'
-import { colors, typography } from '../theme'
-
-type QRDimensions = { width: number; height: number }
-type QROrigin = { x: number; y: number }
+import CheckmarkIcon from '../../assets/checkmark-circle-large.svg'
+import * as API from '../API'
+import { useRegisterUser } from '../hooks/useRegisterUser'
+import { typography } from '../theme'
 
 const QRScanScreen: React.FC = () => {
   const [hasPermission, setHasPermission] = React.useState<boolean | null>(null)
+  const { getUserToken } = useRegisterUser()
 
   const requestPermissions = async () => {
     const { status } = await BarCodeScanner.requestPermissionsAsync()
@@ -21,22 +22,20 @@ const QRScanScreen: React.FC = () => {
   }, [])
 
   const [scanned, setScanned] = React.useState(false)
-  const [dimensions, setDimensions] = React.useState<QRDimensions>()
-  const [origin, setOrigin] = React.useState<QROrigin>()
+  const navigation = useNavigation()
 
-  const handleBarCodeScanned = ({
-    type,
-    data,
-    bounds,
-  }: BarCodeScannerResult) => {
+  const handleBarCodeScanned = async ({ data }: BarCodeScannerResult) => {
     setScanned(true)
-    if (bounds) {
-      const { size, origin } = bounds
-
-      setDimensions({ height: size.height, width: size.width })
-      setOrigin({ x: origin.x, y: origin.y })
+    const token = await getUserToken()
+    if (!token) {
+      console.log('No userID found.')
+      return
     }
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`)
+    await API.checkIn({
+      checkpoint_id: parseInt(data.split('_')[0]),
+      status: 1,
+      user_identifier: token,
+    })
   }
 
   return (
@@ -58,16 +57,7 @@ const QRScanScreen: React.FC = () => {
             style={styles.scanner}
             barCodeTypes={['qr']}
           >
-            {origin && dimensions && (
-              <Svg style={StyleSheet.absoluteFillObject}>
-                <Rect
-                  {...origin}
-                  {...dimensions}
-                  strokeWidth="2"
-                  stroke={colors.red}
-                />
-              </Svg>
-            )}
+            {scanned && <CheckmarkIcon onPress={() => navigation.goBack()} />}
           </BarCodeScanner>
         </>
       )}
@@ -85,12 +75,6 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  button: {
-    position: 'absolute',
-    bottom: 48,
-    zIndex: 500,
-    width: 200,
   },
   title: {
     position: 'absolute',

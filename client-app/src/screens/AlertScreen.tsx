@@ -8,7 +8,7 @@ import useHazardMapSubscription from '../hooks/useHazardMapSubscription'
 import { colors, typography } from '../theme'
 
 const AlertScreen: React.FC = () => {
-  const { loadMapData } = useHazardMapSubscription()
+  const { loadMapData, isLoaded } = useHazardMapSubscription()
   const navigation = useNavigation()
 
   React.useEffect(() => {
@@ -23,13 +23,15 @@ const AlertScreen: React.FC = () => {
         <Text style={[typography.calloutWhite, styles.description]}>
           U velikoj ste opasnosti u vasoj neposrednoj okolini!
         </Text>
-        <Button
-          dark
-          style={styles.button}
-          onPress={() => navigation.navigate(AppRoutes.Suggestions)}
-        >
-          Dalje
-        </Button>
+        {isLoaded && (
+          <Button
+            dark
+            style={styles.button}
+            onPress={() => navigation.navigate(AppRoutes.Suggestions)}
+          >
+            Dalje
+          </Button>
+        )}
       </View>
     </SafeAreaView>
   )

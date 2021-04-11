@@ -7,11 +7,11 @@ import {
   Platform,
   StatusBar,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
-import MapView from 'react-native-maps'
+import MapView, { MapEvent } from 'react-native-maps'
 import BottomSheet from 'reanimated-bottom-sheet'
-import NavigateIcon from '../../assets/navigate.svg'
+import QRCodeIcon from '../../assets/qr-code.svg'
 import ReportBlockadeIcon from '../../assets/report-blockade.svg'
 import * as API from '../API'
 import { AppRoutes } from '../AppRoutes'
@@ -45,23 +45,42 @@ const HazardMap: React.FC = () => {
     hazard,
     transports,
     subcribeToMapUpdates,
+    listenForChanges,
+    loadMapData,
   } = useHazardMapSubscription()
 
   React.useEffect(() => {
     subcribeToMapUpdates()
   }, [subcribeToMapUpdates])
+  React.useEffect(() => {
+    listenForChanges()
+  }, [listenForChanges])
+  React.useEffect(() => {
+    loadMapData()
+  }, [loadMapData])
 
   const sheetRef = React.useRef<BottomSheet>(null)
   const [isSheetOpen, setSheetOpen] = React.useState(false)
+  const [selectedLocation, setSelectedLocation] = React.useState<{
+    longitude: number
+    latitude: number
+  }>()
+
+  const handlePress = (e: MapEvent) => {
+    setSelectedLocation(e.nativeEvent.coordinate)
+  }
+
   const handleBlockadeSubmit = async (description: string) => {
-    console.log(description)
+    if (!selectedLocation || !hazard) return
     try {
-      await API.reportNewBlockade(description, {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      }, hazard.id)
+      const response = await API.reportNewBlockade(
+        description,
+        selectedLocation,
+        hazard.id,
+      )
+      console.log(response)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
     setSheetOpen(false)
   }
@@ -72,30 +91,8 @@ const HazardMap: React.FC = () => {
   }, [isSheetOpen])
 
   const navigation = useNavigation()
-  const [selectedType, setSelectedType] = React.useState<
-    'checkpoint' | 'transport'
-  >()
-  const [selected, setSelected] = React.useState<
-    API.Checkpoint | API.Transport
-  >()
-  const handleNavigationToDetails = () => {
-    if (!selected) return
 
-    navigation.navigate(
-      selectedType === 'checkpoint'
-        ? AppRoutes.CheckpointDetails
-        : AppRoutes.TransportDetails,
-      selected,
-    )
-  }
-
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      setSelectedType(undefined)
-      setSelected(undefined)
-    })
-    return unsubscribe
-  }, [navigation])
+  console.log('User Location', location?.coords)
 
   return (
     <View style={styles.container}>
@@ -107,11 +104,12 @@ const HazardMap: React.FC = () => {
       />
       {!isSheetOpen && (
         <FABContainer position="bottom-right">
-          {selected && (
-            <FAB color="white" onPress={handleNavigationToDetails}>
-              <NavigateIcon height={40} style={styles.navigateIcon} />
-            </FAB>
-          )}
+          <FAB
+            color="purple"
+            onPress={() => navigation.navigate(AppRoutes.QRScan)}
+          >
+            <QRCodeIcon />
+          </FAB>
           <FAB color="orange" onPress={() => setSheetOpen(true)}>
             <ReportBlockadeIcon />
           </FAB>
@@ -121,7 +119,11 @@ const HazardMap: React.FC = () => {
         ref={sheetRef}
         snapPoints={[SHEET_HEIGHT, 0]}
         borderRadius={32}
-        renderContent={() => <BlockadeForm onSubmit={handleBlockadeSubmit} />}
+        renderContent={() => (
+          <BlockadeForm
+            onSubmit={(description) => handleBlockadeSubmit(description)}
+          />
+        )}
         onCloseEnd={() => setSheetOpen(false)}
       />
 
@@ -130,6 +132,7 @@ const HazardMap: React.FC = () => {
       ) : (
         <MapView
           style={StyleSheet.absoluteFillObject}
+          onDoublePress={handlePress}
           initialRegion={{
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -137,6 +140,13 @@ const HazardMap: React.FC = () => {
             longitudeDelta: 0.0034,
           }}
         >
+          {selectedLocation && (
+            <MapMarkers.Blockade
+              defaultOpen={true}
+              name="Blokada"
+              coordinate={selectedLocation}
+            />
+          )}
           <MapMarkers.Me
             coordinate={{
               longitude: location.coords.longitude,
@@ -155,10 +165,9 @@ const HazardMap: React.FC = () => {
           {checkpoints.map((checkpoint) => (
             <MapMarkers.Checkpoint
               onPress={() => {
-                setSelectedType('checkpoint')
-                setSelected(checkpoint)
+                navigation.navigate(AppRoutes.CheckpointDetails, checkpoint)
               }}
-              key={checkpoint.id}
+              key={`${checkpoint.id}-c`}
               peopleCount={checkpoint.people_count}
               capacity={checkpoint.capacity}
               name={checkpoint.name}
@@ -172,10 +181,9 @@ const HazardMap: React.FC = () => {
           {transports.map((transport) => (
             <MapMarkers.Transport
               onPress={() => {
-                setSelectedType('transport')
-                setSelected(transport)
+                navigation.navigate(AppRoutes.TransportDetails, transport)
               }}
-              key={transport.id}
+              key={`${transport.id}-t`}
               type={transport.type}
               description={transport.description}
               coordinate={{
@@ -186,7 +194,7 @@ const HazardMap: React.FC = () => {
           ))}
           {blockades.map(({ id, name, location }) => (
             <MapMarkers.Blockade
-              key={id}
+              key={`${id}-b`}
               name={name}
               coordinate={{
                 longitude: location.coordinates[0],
@@ -205,9 +213,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  navigateIcon: {
-    marginLeft: 8,
   },
 })
 

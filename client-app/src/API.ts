@@ -13,7 +13,7 @@ export type Checkpoint = {
   name: string
   location: Location
   capacity: number
-  phone_number: string
+  phone_numbers: string
   description: string
   people_count: number
   created_at: string
@@ -75,8 +75,6 @@ export const checkIn = async (checkInCommand: CheckInCommand) => {
   )
 }
 
-export const checkOut = async () => {}
-
 export const register = async (
   expo: string,
   location: {
@@ -88,7 +86,6 @@ export const register = async (
     expo,
     location,
   })
-  console.log('Hello', response)
   return response
 }
 
@@ -180,7 +177,7 @@ export interface Transport {
   id: number
   location: Location
   type: TransportType
-  phone_number: string
+  phone_numbers: string
   description: string
   created_at: string
   updated_at: string
@@ -198,16 +195,15 @@ export const getMapData = async (
   return instance.get(`/map-data/${hazardID}`)
 }
 
-
 export const reportNewBlockade = async (
   description: string,
-  location: { latitude: number, longitude: number },
-  hazardId: number
+  location: { latitude: number; longitude: number },
+  hazardId: number,
 ) => {
+  console.log('sending new blockade')
   return instance.post(`/blocade`, {
     name: description,
     location,
-    hazard_id: hazardId
+    hazard_id: hazardId,
   })
 }
-

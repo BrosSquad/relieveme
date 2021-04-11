@@ -34,16 +34,14 @@ export const NotificationProvider: React.FC = ({ children }) => {
     [notification],
   )
 
-  const loadPersistedNotification = async () => {
-    const notificationJSONString = await AsyncStorage.getItem(STORAGE_KEY)
-    if (notificationJSONString) {
-      setNotification(JSON.parse(notificationJSONString))
-    }
-  }
-
   React.useEffect(() => {
-    loadPersistedNotification()
-  }, [])
+    if (notification) return
+    AsyncStorage.getItem(STORAGE_KEY).then((notificationString) => {
+      if (notificationString) {
+        setNotification(JSON.parse(notificationString))
+      }
+    })
+  }, [notification])
 
   React.useEffect(() => {
     if (notification) {

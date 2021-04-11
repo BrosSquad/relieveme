@@ -13,11 +13,12 @@ import { colors, typography } from '../theme'
 const CheckpointDetailsScreen: React.FC = () => {
   const { params } = useRoute()
   const {
+    id,
     capacity,
     description,
     helps,
     people_count,
-    phone_number,
+    phone_numbers,
     location: {
       coordinates: [longitude, latitude],
     },
@@ -26,7 +27,7 @@ const CheckpointDetailsScreen: React.FC = () => {
 
   const handleCall = async () => {
     if (Constants.isDevice) {
-      await Linking.openURL(`tel:${phone_number}`)
+      await Linking.openURL(`tel:${phone_numbers}`)
     } else {
       alert('Phone calls can only be made on real device')
     }
@@ -40,7 +41,10 @@ const CheckpointDetailsScreen: React.FC = () => {
         Popunjenost: {people_count} / {capacity}
       </Text>
       <Text style={typography.title3Emphasized}>
-        Vrste pomoci: {helps.map((help) => help.name).join(', ')}
+        Vrste pomoci: {helps ? helps.map((help) => help.name).join(', ') : ''}
+      </Text>
+      <Text style={typography.title3Emphasized}>
+        Identifikacioni broj: {id}
       </Text>
       <Text style={typography.body}>{description}</Text>
       <FABContainer position="bottom-right">

@@ -73,21 +73,20 @@ const CheckpointMarker: React.FC<CheckpointMarkerProps & BaseMarkerProps> = ({
 }) => {
   const { ref, toggle } = useCallout()
   const helpsText = helps
-    .map((help) => help.name)
-    .join(', ')
-    .toUpperCase()
+    ? helps
+        .map((help) => help.name)
+        .join(', ')
+        .toUpperCase()
+    : ''
 
   return (
     <Marker
       ref={ref}
-      onPress={() => {
-        toggle()
-        onPress && onPress()
-      }}
+      onPress={toggle}
       image={require('../../assets/pin-checkpoint.png')}
       coordinate={coordinate}
     >
-      <Callout>
+      <Callout onPress={onPress}>
         <View style={styles.calloutContainer}>
           <Text style={[typography.bodyEmphasized, styles.calloutTitle]}>
             {name}
@@ -106,13 +105,15 @@ const CheckpointMarker: React.FC<CheckpointMarkerProps & BaseMarkerProps> = ({
 
 type BlockadeMarkerProps = {
   name: string
+  defaultOpen?: boolean
 }
 
 const BlockadeMarker: React.FC<BlockadeMarkerProps & BaseMarkerProps> = ({
   coordinate,
   name,
+  defaultOpen,
 }) => {
-  const { ref, toggle } = useCallout()
+  const { ref, toggle } = useCallout(defaultOpen)
 
   return (
     <Marker

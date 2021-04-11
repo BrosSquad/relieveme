@@ -1,13 +1,42 @@
 import { useNavigation } from '@react-navigation/core'
+import * as Location from 'expo-location'
 import React from 'react'
 import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import CheckmarkIcon from '../../assets/checkmark.svg'
 import { AppRoutes } from '../AppRoutes'
 import Button from '../components/Button'
+import { useNotification } from '../hooks/useNotification'
+import { useRegisterUser } from '../hooks/useRegisterUser'
 import { colors, typography } from '../theme'
+import getUserLocation from '../utils/getUserLocation'
+import registerForPushNotificationsAsync from '../utils/registerForPushNotificationsAsync'
 
 const WelcomeScreen: React.FC = () => {
+  const [expoPushToken, setExpoPushToken] = React.useState<string>()
+
+  React.useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      console.log('Set Push Token', token)
+      setExpoPushToken(token)
+    })
+  }, [])
+
+  const { registerUser, getUserToken } = useRegisterUser()
+  const [location, setLocation] = React.useState<Location.LocationObject>()
+
+  React.useEffect(() => {
+    getUserLocation().then((location) => location && setLocation(location))
+  }, [])
+
+  React.useEffect(() => {
+    if (expoPushToken && location) {
+      registerUser(expoPushToken, location)
+    }
+    getUserToken().then((token) => console.log('User Token', token))
+  }, [expoPushToken, getUserToken, location, registerUser])
+
   const navigation = useNavigation()
+  const { hasNotification } = useNotification()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -24,9 +53,11 @@ const WelcomeScreen: React.FC = () => {
           o nepogodama u Vasoj blizini, sada mozete da zatvorite aplikaciju i
           zaboravite da ste je instalirali.
         </Text>
-        <Button onPress={() => navigation.navigate(AppRoutes.Suggestions)}>
-          Dalje
-        </Button>
+        {hasNotification && (
+          <Button onPress={() => navigation.navigate(AppRoutes.HazardMap)}>
+            Idi na Mapu
+          </Button>
+        )}
       </View>
     </SafeAreaView>
   )

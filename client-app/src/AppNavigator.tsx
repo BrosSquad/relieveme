@@ -1,13 +1,11 @@
 import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { Subscription } from '@unimodules/core'
-import * as Location from 'expo-location'
 import * as Notifications from 'expo-notifications'
 import React from 'react'
 import 'react-native-gesture-handler'
 import { AppRoutes } from './AppRoutes'
 import { NotificationPayload, useNotification } from './hooks/useNotification'
-import { useRegisterUser } from './hooks/useRegisterUser'
 import AlertScreen from './screens/AlertScreen'
 import CheckpointDetailsScreen from './screens/CheckpointDetailsScreen'
 import HazardMap from './screens/HazardMap'
@@ -16,8 +14,6 @@ import SafetySuggestionsScreen from './screens/SafetySuggestionsScreen'
 import TransportDetailsScreen from './screens/TransportDetailsScreen'
 import WelcomeScreen from './screens/WelcomeScreen'
 import { typography } from './theme'
-import getUserLocation from './utils/getUserLocation'
-import registerForPushNotificationsAsync from './utils/registerForPushNotificationsAsync'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -31,17 +27,15 @@ const AppStack = createStackNavigator()
 const AppNavigator: React.FC = () => {
   const navigation = useNavigation()
   const { setNotification } = useNotification()
-  const [expoPushToken, setExpoPushToken] = React.useState<string>()
   const notificationListener = React.useRef<Subscription>()
   const responseListener = React.useRef<Subscription>()
 
   React.useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token))
     notificationListener.current = Notifications.addNotificationReceivedListener(
       (notification) => {
         const payload = notification.request.content.data as NotificationPayload
-        setNotification(payload)
         if (payload.type === 'hazard') {
+          setNotification(payload)
           navigation.navigate(AppRoutes.Alert)
         }
       },
@@ -52,6 +46,7 @@ const AppNavigator: React.FC = () => {
         const payload = response.notification.request.content
           .data as NotificationPayload
         if (payload.type === 'hazard') {
+          setNotification(payload)
           navigation.navigate(AppRoutes.Alert)
         }
       },
@@ -66,19 +61,6 @@ const AppNavigator: React.FC = () => {
       }
     }
   }, [navigation, setNotification])
-
-  const { registerUser } = useRegisterUser()
-  const [location, setLocation] = React.useState<Location.LocationObject>()
-
-  React.useEffect(() => {
-    getUserLocation().then((location) => location && setLocation(location))
-  }, [])
-
-  React.useEffect(() => {
-    if (expoPushToken && location) {
-      registerUser(expoPushToken, location)
-    }
-  }, [expoPushToken, location, registerUser])
 
   return (
     <AppStack.Navigator

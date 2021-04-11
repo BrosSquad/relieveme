@@ -1,4 +1,4 @@
-import Pusher from 'pusher-js/react-native'
+import Pusher, { Channel } from 'pusher-js/react-native'
 import React, { Dispatch } from 'react'
 import * as API from '../API'
 import { useNotification } from './useNotification'
@@ -12,6 +12,9 @@ type HazardMapContext = {
   transports: API.Transport[]
   checkpoints: API.Checkpoint[]
   subcribeToMapUpdates: () => void
+  isConnected: boolean
+  listenForChanges: () => void
+  isLoaded: boolean
 }
 const context = React.createContext<HazardMapContext>({
   blockades: [],
@@ -20,7 +23,11 @@ const context = React.createContext<HazardMapContext>({
   loadMapData: async () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   subcribeToMapUpdates: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  listenForChanges: () => {},
   transports: [],
+  isConnected: false,
+  isLoaded: false,
 })
 
 enum EventActionType {
@@ -69,9 +76,20 @@ const listReducer = (
   }
 }
 
+type Channels = {
+  checkpoints: Channel
+  transports: Channel
+  check: Channel
+}
+const channel: Channels = {
+  checkpoints: pusher.subscribe(`checkpoints`),
+  transports: pusher.subscribe(`transports`),
+  check: pusher.subscribe(`check`),
+}
+
 type PoorlyTypedList<T> = [T[], Dispatch<EventActionPayload<T | T[]>>]
 export const HazardMapProvider: React.FC = ({ children }) => {
-  const { notification } = useNotification()
+  const { notification, hasNotification } = useNotification()
   const [hazard, setHazard] = React.useState<API.Hazard>()
   const [
     blockades,
@@ -85,48 +103,58 @@ export const HazardMapProvider: React.FC = ({ children }) => {
     transports,
     dispatchTransports,
   ]: PoorlyTypedList<API.Transport> = React.useReducer(listReducer, [])
+  const [isConnected, setConnected] = React.useState(false)
+  const [isLoaded, setLoaded] = React.useState(false)
 
   const loadMapData = React.useCallback(async () => {
-    if (!notification) return
+    if (isLoaded || !hasNotification || !notification) return
+
     const { data } = await API.getMapData(notification.id)
 
     dispatchBlockades({ type: EventActionType.LOAD, data: data.blocades })
     dispatchCheckpoints({ type: EventActionType.LOAD, data: data.checkpoints })
     dispatchTransports({ type: EventActionType.LOAD, data: data.transports })
     setHazard(data.hazard)
-  }, [notification])
+    setLoaded(true)
+  }, [hasNotification, isLoaded, notification])
 
   const subcribeToMapUpdates = React.useCallback(() => {
+    if (isConnected) return
     if (!hazard) {
       console.log('No hazard.id in subscription')
       return
     }
 
-    const channel = {
-      blockades: pusher.subscribe(`blockades.${hazard.id}`),
-      checkpoints: pusher.subscribe(`checkpoints`),
-      transports: pusher.subscribe(`transports`),
-      check: pusher.subscribe(`check`),
-      hazard: pusher.subscribe(`hazard.${hazard.id}`),
-    }
+    setConnected(true)
+  }, [hazard, isConnected])
 
-    channel.blockades.bind(
+  const listenForChanges = React.useCallback(() => {
+    const blockadesChannel = pusher.subscribe(`blocades.${hazard?.id}`)
+    blockadesChannel.bind(
       Events.BLOCKADE,
-      (payload: EventActionPayload<API.Blocade>) => dispatchBlockades(payload),
+      (payload: EventActionPayload<API.Blocade>) => {
+        console.log('Blockade Event')
+        dispatchBlockades(payload)
+      },
     )
     channel.checkpoints.bind(
       Events.CHECKPOINT,
-      (payload: EventActionPayload<API.Checkpoint>) =>
-        dispatchCheckpoints(payload),
+      (payload: EventActionPayload<API.Checkpoint>) => {
+        console.log('Checkpoint Event', payload)
+        dispatchCheckpoints(payload)
+      },
     )
     channel.transports.bind(
       Events.TRANSPORT,
-      (payload: EventActionPayload<API.Transport>) =>
-        dispatchTransports(payload),
+      (payload: EventActionPayload<API.Transport>) => {
+        console.log('Transport Event')
+        dispatchTransports(payload)
+      },
     )
     channel.check.bind(
       Events.CHECK,
       (payload: EventActionPayload<{ checkpoint_id: number }>) => {
+        console.log('Check Event')
         const checkpoint = checkpoints.find(
           (item) => item.id === payload.data.checkpoint_id,
         )
@@ -139,7 +167,7 @@ export const HazardMapProvider: React.FC = ({ children }) => {
         dispatchCheckpoints({ type: EventActionType.UPDATED, data: checkpoint })
       },
     )
-  }, [checkpoints, hazard])
+  }, [checkpoints])
 
   const contextValue: HazardMapContext = React.useMemo(
     () => ({
@@ -148,7 +176,10 @@ export const HazardMapProvider: React.FC = ({ children }) => {
       blockades,
       transports,
       checkpoints,
+      isConnected,
       subcribeToMapUpdates,
+      listenForChanges,
+      isLoaded,
     }),
     [
       blockades,
@@ -156,7 +187,10 @@ export const HazardMapProvider: React.FC = ({ children }) => {
       hazard,
       loadMapData,
       subcribeToMapUpdates,
+      isConnected,
       transports,
+      listenForChanges,
+      isLoaded,
     ],
   )
 

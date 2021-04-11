@@ -1,14 +1,16 @@
 import React from 'react'
 import { Marker } from 'react-native-maps'
 
-const useCallout = () => {
+const useCallout = (defaultState?: boolean) => {
   const ref = React.useRef<Marker>(null)
 
-  const [isCalloutVisible, setCalloutVisible] = React.useState(false)
+  const [isCalloutVisible, setCalloutVisible] = React.useState<
+    boolean | undefined
+  >(defaultState)
   const toggle = () => setCalloutVisible((prev) => !prev)
 
   React.useEffect(() => {
-    if (ref.current) {
+    if (ref.current && isCalloutVisible !== undefined) {
       isCalloutVisible ? ref.current.hideCallout() : ref.current.showCallout()
     }
   }, [isCalloutVisible])

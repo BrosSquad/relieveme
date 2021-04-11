@@ -14,7 +14,7 @@ const TransportDetailsScreen: React.FC = () => {
   const { params } = useRoute()
   const {
     description,
-    phone_number,
+    phone_numbers,
     location: {
       coordinates: [longitude, latitude],
     },
@@ -23,7 +23,7 @@ const TransportDetailsScreen: React.FC = () => {
   const { address } = useRevereseGeocoding({ latitude, longitude })
   const handleCall = async () => {
     if (Constants.isDevice) {
-      await Linking.openURL(`tel:${phone_number}`)
+      await Linking.openURL(`tel:${phone_numbers}`)
     } else {
       alert('Phone calls can only be made on real device')
     }

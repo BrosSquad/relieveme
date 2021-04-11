@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { KeyboardAvoidingView, Platform, StyleSheet, Text } from 'react-native'
 import { colors, typography } from '../theme'
 import Button from './Button'
 import TextArea from './TextArea'
@@ -11,12 +11,16 @@ type Props = {
 const BlockadeForm: React.FC<Props> = ({ onSubmit }) => {
   const [description, setDescription] = React.useState('')
   const hanleSubmit = () => {
-    onSubmit(description)
-    setDescription('')
+    console.log('hello')
+    // onSubmit(description)
+    // setDescription('')
   }
 
   return (
-    <View style={styles.sheetContainer}>
+    <KeyboardAvoidingView
+      style={styles.sheetContainer}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
       <Text style={[typography.title3Emphasized, styles.sheetTitle]}>
         Naisli ste na blokadu na putu?
       </Text>
@@ -29,7 +33,7 @@ const BlockadeForm: React.FC<Props> = ({ onSubmit }) => {
         style={styles.sheetInput}
       />
       <Button onPress={hanleSubmit}>Posalji</Button>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
