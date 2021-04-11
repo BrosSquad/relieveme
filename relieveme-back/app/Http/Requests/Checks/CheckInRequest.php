@@ -26,7 +26,7 @@ class CheckInRequest extends FormRequest
         return [
             'status' => 'bail|required|integer|size:1',
             'user_identifier' => 'bail|required|string',
-            'checkpoint_id' => 'bail|required|integer'
+            'checkpoint_id' => 'bail|required|integer|exists:checkpoints,id'
         ];
     }
 }
