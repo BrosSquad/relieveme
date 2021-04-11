@@ -4,6 +4,7 @@ import React from 'react'
 import {
   ActivityIndicator,
   Dimensions,
+  Platform,
   StatusBar,
   StyleSheet,
   View,
@@ -70,7 +71,12 @@ const HazardMap: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar
+        barStyle={Platform.select({
+          ios: 'dark-content',
+          android: 'light-content',
+        })}
+      />
       {!isSheetOpen && (
         <FABContainer position="bottom-right">
           <FAB color="orange" onPress={() => setSheetOpen(true)}>
@@ -90,7 +96,7 @@ const HazardMap: React.FC = () => {
         <ActivityIndicator color={colors.black} />
       ) : (
         <MapView
-          style={styles.map}
+          style={StyleSheet.absoluteFillObject}
           initialRegion={{
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
