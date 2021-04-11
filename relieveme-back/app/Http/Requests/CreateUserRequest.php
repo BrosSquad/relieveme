@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
+use Illuminate\Foundation\Http\FormRequest;
 
 class CreateUserRequest extends FormRequest
 {
@@ -36,12 +36,12 @@ class CreateUserRequest extends FormRequest
                 'required',
                 'array'
             ],
-            'location.latitude' => [
+            'location.lat' => [
                 'bail',
                 'required',
                 'numeric',
             ],
-            'location.longitude' => [
+            'location.lng' => [
                 'bail',
                 'required',
                 'numeric',
