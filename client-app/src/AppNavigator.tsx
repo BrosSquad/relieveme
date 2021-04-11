@@ -10,7 +10,7 @@ const Stack = createStackNavigator()
 const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Welcome">
+      <Stack.Navigator initialRouteName="HazardMap">
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
