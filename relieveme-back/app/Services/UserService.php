@@ -28,7 +28,7 @@ class UserService
 
                 try {
                     $expo = Expo::query()->where('token', $expoToken)->firstOrFail();
-                    return $expo->user();
+                    return $expo->user;
                 } catch (\Exception $e) {
 
                     $user = User::create(['identifier' => Str::random(32)]);
