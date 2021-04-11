@@ -11,19 +11,18 @@ import {
 import MapView from 'react-native-maps'
 import BottomSheet from 'reanimated-bottom-sheet'
 import ReportBlockadeIcon from '../../assets/report-blockade.svg'
+import * as API from '../API'
 import BlockadeForm from '../components/BlockadeForm'
 import FAB from '../components/FAB'
 import FABContainer from '../components/FABContainer'
 import MapMarkers from '../components/MapMarkers'
+import { useNotification } from '../hooks/useNotification'
 import { colors } from '../theme'
 
 const SHEET_HEIGHT = 600
 
 const HazardMap: React.FC = () => {
   const [location, setLocation] = React.useState<Location.LocationObject>()
-  const [isSheetOpen, setSheetOpen] = React.useState(false)
-  const sheetRef = React.useRef<BottomSheet>(null)
-
   const watchUserLocation = async () => {
     await Location.watchPositionAsync(
       { accuracy: LocationAccuracy.Highest },
@@ -33,15 +32,36 @@ const HazardMap: React.FC = () => {
     )
   }
 
-  const handleBlockadeSubmit = (description: string) => {
-    console.log(description)
-    setSheetOpen(false)
-  }
-
   React.useEffect(() => {
     watchUserLocation()
   }, [])
 
+  const { notification } = useNotification()
+  const [hazard, setHazard] = React.useState<API.Hazard>()
+  const [blockades, setBlockades] = React.useState<API.Blocade[]>([])
+  const [checkpoints, setCheckpoints] = React.useState<API.Checkpoint[]>([])
+  const [transports, setTransports] = React.useState<API.Transport[]>([])
+
+  const loadMapData = React.useCallback(async () => {
+    if (!notification) return
+    const { data } = await API.getMapData(notification.id)
+
+    setBlockades(data.blocades)
+    setCheckpoints(data.checkpoints)
+    setTransports(data.transports)
+    setHazard(data.hazard)
+  }, [notification])
+
+  React.useEffect(() => {
+    loadMapData()
+  }, [loadMapData])
+
+  const sheetRef = React.useRef<BottomSheet>(null)
+  const [isSheetOpen, setSheetOpen] = React.useState(false)
+  const handleBlockadeSubmit = (description: string) => {
+    console.log(description)
+    setSheetOpen(false)
+  }
   React.useEffect(() => {
     if (sheetRef.current) {
       isSheetOpen ? sheetRef.current.snapTo(0) : sheetRef.current.snapTo(1)
@@ -78,10 +98,57 @@ const HazardMap: React.FC = () => {
             longitudeDelta: 0.0034,
           }}
         >
-          <MapMarkers.Blockade
-            location={location}
-            description="Urusila se zgrada, put je blokiran u oba smera!"
+          <MapMarkers.Me
+            coordinate={{
+              longitude: location.coords.longitude,
+              latitude: location.coords.latitude,
+            }}
           />
+          {hazard && (
+            <MapMarkers.HazardCircle
+              radius={hazard.radius}
+              coordinate={{
+                longitude: hazard.location.coordinates[0],
+                latitude: hazard.location.coordinates[1],
+              }}
+            />
+          )}
+          {checkpoints.map(
+            ({ id, people_count, capacity, location, name, helps }) => (
+              <MapMarkers.Checkpoint
+                key={id}
+                peopleCount={people_count}
+                capacity={capacity}
+                name={name}
+                helps={helps}
+                coordinate={{
+                  longitude: location.coordinates[0],
+                  latitude: location.coordinates[1],
+                }}
+              />
+            ),
+          )}
+          {transports.map(({ id, type, description, location }) => (
+            <MapMarkers.Transport
+              key={id}
+              type={type}
+              description={description}
+              coordinate={{
+                longitude: location.coordinates[0],
+                latitude: location.coordinates[1],
+              }}
+            />
+          ))}
+          {blockades.map(({ id, name, location }) => (
+            <MapMarkers.Blockade
+              key={id}
+              name={name}
+              coordinate={{
+                longitude: location.coordinates[0],
+                latitude: location.coordinates[1],
+              }}
+            />
+          ))}
         </MapView>
       )}
     </View>
