@@ -4,11 +4,11 @@ namespace App\Events;
 
 use App\Models\Hazard;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class HazardEvent implements ShouldQueue, ShouldBroadcast
 {
@@ -30,12 +30,18 @@ class HazardEvent implements ShouldQueue, ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('hazard_' . $this->hazard->id);
+        return new Channel('hazard.' . $this->hazard->id);
     }
 
 
     public function broadcastWith()
     {
         return ['type' => $this->action, 'data' => $this->hazard];
+    }
+
+
+    public function broadcastAs()
+    {
+        return 'hazard-event';
     }
 }

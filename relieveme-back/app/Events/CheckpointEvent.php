@@ -4,11 +4,11 @@ namespace App\Events;
 
 use App\Models\Checkpoint;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class CheckpointEvent implements ShouldBroadcast
 {
@@ -36,5 +36,10 @@ class CheckpointEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         return ['type' => $this->action, 'data' => $this->checkpoint];
+    }
+
+    public function broadcastAs()
+    {
+        return 'checkpoint-event';
     }
 }
