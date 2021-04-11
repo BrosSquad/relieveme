@@ -8,9 +8,7 @@ use App\Models\Blocade;
 use App\Models\Checkpoint;
 use App\Models\Hazard;
 use App\Models\Transport;
-use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\Log;
 
 class MapService
 {
@@ -25,18 +23,10 @@ class MapService
      */
     public function getMapData(int $hazard_id): array
     {
-        $key = "hazard-$hazard_id-map-data";
-
-        $cached = $this->getCachedData($key);
-
-        if ($cached !== null) {
-            return $cached;
-        }
-
         $hazard = Hazard::whereId($hazard_id)->firstOrFail();
         $transports = Transport::all();
         $checkpoints = Checkpoint::with('helps')->get();
-        $blocades = Blocade::whereHazardId($hazard_id)->first();
+        $blocades = Blocade::whereHazardId($hazard_id)->get();
 
         $data = [
             'hazard' => $hazard,
@@ -45,24 +35,6 @@ class MapService
             'blocades' => $blocades
         ];
 
-        if (!cache()->put($key, json_encode($data), Carbon::now()->addMinutes(5))) {
-            Log::error('Error while inserting in redis.');
-        }
-
         return $data;
-    }
-
-    /**
-     * Returns cached data from Redis if it exists, or null.
-     *
-     * @throws Exception
-     */
-    private function getCachedData(string $key): ?array
-    {
-        $cachedData = cache()->get($key);
-
-        return $cachedData !== null
-            ? json_decode($cachedData, true)
-            : null;
     }
 }
