@@ -1,9 +1,9 @@
+import { useNavigation } from '@react-navigation/core'
 import * as Location from 'expo-location'
 import { LocationAccuracy } from 'expo-location'
 import React from 'react'
 import {
   ActivityIndicator,
-  Dimensions,
   Platform,
   StatusBar,
   StyleSheet,
@@ -11,8 +11,10 @@ import {
 } from 'react-native'
 import MapView from 'react-native-maps'
 import BottomSheet from 'reanimated-bottom-sheet'
+import NavigateIcon from '../../assets/navigate.svg'
 import ReportBlockadeIcon from '../../assets/report-blockade.svg'
 import * as API from '../API'
+import { AppRoutes } from '../AppRoutes'
 import BlockadeForm from '../components/BlockadeForm'
 import FAB from '../components/FAB'
 import FABContainer from '../components/FABContainer'
@@ -69,6 +71,32 @@ const HazardMap: React.FC = () => {
     }
   }, [isSheetOpen])
 
+  const navigation = useNavigation()
+  const [selectedType, setSelectedType] = React.useState<
+    'checkpoint' | 'transport'
+  >()
+  const [selected, setSelected] = React.useState<
+    API.Checkpoint | API.Transport
+  >()
+  const handleNavigationToDetails = () => {
+    if (!selected) return
+
+    navigation.navigate(
+      selectedType === 'checkpoint'
+        ? AppRoutes.CheckpointDetails
+        : AppRoutes.TransportDetails,
+      selected,
+    )
+  }
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setSelectedType(undefined)
+      setSelected(undefined)
+    })
+    return unsubscribe
+  }, [navigation])
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -79,6 +107,11 @@ const HazardMap: React.FC = () => {
       />
       {!isSheetOpen && (
         <FABContainer position="bottom-right">
+          {selected && (
+            <FAB color="white" onPress={handleNavigationToDetails}>
+              <NavigateIcon height={40} style={styles.navigateIcon} />
+            </FAB>
+          )}
           <FAB color="orange" onPress={() => setSheetOpen(true)}>
             <ReportBlockadeIcon />
           </FAB>
@@ -119,29 +152,35 @@ const HazardMap: React.FC = () => {
               }}
             />
           )}
-          {checkpoints.map(
-            ({ id, people_count, capacity, location, name, helps }) => (
-              <MapMarkers.Checkpoint
-                key={id}
-                peopleCount={people_count}
-                capacity={capacity}
-                name={name}
-                helps={helps}
-                coordinate={{
-                  longitude: location.coordinates[0],
-                  latitude: location.coordinates[1],
-                }}
-              />
-            ),
-          )}
-          {transports.map(({ id, type, description, location }) => (
-            <MapMarkers.Transport
-              key={id}
-              type={type}
-              description={description}
+          {checkpoints.map((checkpoint) => (
+            <MapMarkers.Checkpoint
+              onPress={() => {
+                setSelectedType('checkpoint')
+                setSelected(checkpoint)
+              }}
+              key={checkpoint.id}
+              peopleCount={checkpoint.people_count}
+              capacity={checkpoint.capacity}
+              name={checkpoint.name}
+              helps={checkpoint.helps}
               coordinate={{
-                longitude: location.coordinates[0],
-                latitude: location.coordinates[1],
+                longitude: checkpoint.location.coordinates[0],
+                latitude: checkpoint.location.coordinates[1],
+              }}
+            />
+          ))}
+          {transports.map((transport) => (
+            <MapMarkers.Transport
+              onPress={() => {
+                setSelectedType('transport')
+                setSelected(transport)
+              }}
+              key={transport.id}
+              type={transport.type}
+              description={transport.description}
+              coordinate={{
+                longitude: transport.location.coordinates[0],
+                latitude: transport.location.coordinates[1],
               }}
             />
           ))}
@@ -167,9 +206,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+  navigateIcon: {
+    marginLeft: 8,
   },
 })
 
