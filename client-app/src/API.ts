@@ -201,7 +201,7 @@ export const getMapData = async (
 
 export const reportNewBlockade = async (
   description: string,
-  location: Location,
+  location: { latitude: number, longitude: number },
   hazardId: number
 ) => {
   return instance.post(`/blocade`, {

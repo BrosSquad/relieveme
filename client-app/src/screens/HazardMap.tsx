@@ -61,10 +61,13 @@ const HazardMap: React.FC = () => {
 
   const sheetRef = React.useRef<BottomSheet>(null)
   const [isSheetOpen, setSheetOpen] = React.useState(false)
-  const handleBlockadeSubmit = (description: string) => {
+  const handleBlockadeSubmit = async (description: string) => {
     console.log(description)
     try {
-      API.reportNewBlockade(description, location, hazard.id)
+      await API.reportNewBlockade(description, {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      }, hazard.id)
     } catch (err) {
       console.log(err);
     }
