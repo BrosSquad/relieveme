@@ -16,11 +16,11 @@ class UserController extends Controller
 
     public function create(CreateUserRequest $request): JsonResponse
     {
-        return new JsonResponse(
+        return response()->json([
             [
                 'token' => $this->userService->createUser($request->validated())->identifier,
             ],
             201
-        );
+        ]);
     }
 }
