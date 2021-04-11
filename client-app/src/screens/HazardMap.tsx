@@ -7,7 +7,7 @@ import {
   Platform,
   StatusBar,
   StyleSheet,
-  View,
+  View
 } from 'react-native'
 import MapView from 'react-native-maps'
 import BottomSheet from 'reanimated-bottom-sheet'
@@ -63,6 +63,11 @@ const HazardMap: React.FC = () => {
   const [isSheetOpen, setSheetOpen] = React.useState(false)
   const handleBlockadeSubmit = (description: string) => {
     console.log(description)
+    try {
+      API.reportNewBlockade(description, location, hazard.id)
+    } catch (err) {
+      console.log(err);
+    }
     setSheetOpen(false)
   }
   React.useEffect(() => {
