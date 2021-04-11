@@ -19,7 +19,7 @@ import BlockadeForm from '../components/BlockadeForm'
 import FAB from '../components/FAB'
 import FABContainer from '../components/FABContainer'
 import MapMarkers from '../components/MapMarkers'
-import { useNotification } from '../hooks/useNotification'
+import useHazardMapSubscription from '../hooks/useHazardMapSubscription'
 import { colors } from '../theme'
 
 const SHEET_HEIGHT = 600
@@ -39,25 +39,17 @@ const HazardMap: React.FC = () => {
     watchUserLocation()
   }, [])
 
-  const { notification } = useNotification()
-  const [hazard, setHazard] = React.useState<API.Hazard>()
-  const [blockades, setBlockades] = React.useState<API.Blocade[]>([])
-  const [checkpoints, setCheckpoints] = React.useState<API.Checkpoint[]>([])
-  const [transports, setTransports] = React.useState<API.Transport[]>([])
-
-  const loadMapData = React.useCallback(async () => {
-    if (!notification) return
-    const { data } = await API.getMapData(notification.id)
-
-    setBlockades(data.blocades)
-    setCheckpoints(data.checkpoints)
-    setTransports(data.transports)
-    setHazard(data.hazard)
-  }, [notification])
+  const {
+    blockades,
+    checkpoints,
+    hazard,
+    transports,
+    subcribeToMapUpdates,
+  } = useHazardMapSubscription()
 
   React.useEffect(() => {
-    loadMapData()
-  }, [loadMapData])
+    subcribeToMapUpdates()
+  }, [subcribeToMapUpdates])
 
   const sheetRef = React.useRef<BottomSheet>(null)
   const [isSheetOpen, setSheetOpen] = React.useState(false)
