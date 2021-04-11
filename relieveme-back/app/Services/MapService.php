@@ -36,7 +36,7 @@ class MapService
         $hazard = Hazard::whereId($hazard_id)->firstOrFail();
         $transports = Transport::all();
         $checkpoints = Checkpoint::with('helps')->get();
-        $blocades = Blocade::whereHazardId($hazard_id)->firstOrFail();
+        $blocades = Blocade::whereHazardId($hazard_id)->first();
 
         $data = [
             'hazard' => $hazard,
