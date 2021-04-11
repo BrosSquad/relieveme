@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 
-use App\Jobs\SendNotificationsToUsers;
 use App\Models\Hazard;
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
+use App\Jobs\SendNotificationsToUsers;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Database\Eloquent\Collection;
 use MStaack\LaravelPostgis\Geometries\Point;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class HazardService
 {
@@ -36,7 +36,7 @@ class HazardService
             [
                 'danger' => $data['danger'],
                 'level' => $data['level'],
-                'location' => new Point($data['location']['lat'], $data['location']['lng']),
+                'location' => new Point($data['location']['latitude'], $data['location']['longitude']),
                 'radius' => $data['radius'],
             ]
         );
