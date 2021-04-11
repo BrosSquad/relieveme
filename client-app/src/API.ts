@@ -33,7 +33,7 @@ export type CreateCheckpointPayload = {
   }
   hazard_id: number
   capacity: number
-  phone_number: stri
+  phone_number: string
 }
 
 export const createCheckpoint = (payload: CreateCheckpointPayload) => {
@@ -197,3 +197,17 @@ export const getMapData = async (
 ): Promise<AxiosResponse<GetMapDataResponse>> => {
   return instance.get(`/map-data/${hazardID}`)
 }
+
+
+export const reportNewBlockade = async (
+  description: string,
+  location: { latitude: number, longitude: number },
+  hazardId: number
+) => {
+  return instance.post(`/blocade`, {
+    name: description,
+    location,
+    hazard_id: hazardId
+  })
+}
+
