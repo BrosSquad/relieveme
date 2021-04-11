@@ -21,7 +21,7 @@ use MStaack\LaravelPostgis\Geometries\Point;
  * @property int $id
  * @property string $danger
  * @property int $level
- * @property mixed $location
+ * @property Point $location
  * @property int $radius
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -51,7 +51,8 @@ class Hazard extends Model
     protected $fillable = [
         'danger',
         'level',
-        'location'
+        'location',
+        'radius'
     ];
 
     /**

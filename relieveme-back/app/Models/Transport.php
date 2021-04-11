@@ -17,7 +17,7 @@ use MStaack\LaravelPostgis\Geometries\Point;
  * App\Models\Transport
  *
  * @property int $id
- * @property mixed $location
+ * @property Point $location
  * @property string $type
  * @property string $phone_numbers
  * @property string|null $description
@@ -39,6 +39,10 @@ use MStaack\LaravelPostgis\Geometries\Point;
 class Transport extends Model
 {
     use HasFactory, PostgisTrait;
+
+    public const TYPE_BUS = 'autobus';
+    public const TYPE_VAN = 'kombi';
+    public const TYPE_HELICOPTER = 'helikopter';
 
     /**
      * @var string[]

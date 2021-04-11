@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Actions;
+use App\Events\CheckEvent;
 use App\Models\Check;
 use App\Models\User;
 
@@ -16,7 +18,7 @@ class CheckService
         $check = $this->findCheckByCheckpointIdAndUserId($checkpointId, $user->id);
 
         if ($check === false) {
-            return Check::query()
+            $check = Check::query()
                 ->create(
                     [
                         'status' => $status,
@@ -24,6 +26,10 @@ class CheckService
                         'checkpoint_id' => $checkpointId
                     ]
                 );
+
+            event(new CheckEvent($checkpointId, Actions::CREATED));
+
+            return $check;
         }
 
         return false;
@@ -31,15 +37,19 @@ class CheckService
 
     public function checkOut(int $checkpointId, string $userIdentifier): bool
     {
-       $user = User::whereIdentifier($userIdentifier)->firstOrFail();
+        $user = User::whereIdentifier($userIdentifier)->firstOrFail();
 
-       $check = $this->findCheckByCheckpointIdAndUserId($checkpointId, $user->id);
+        $check = $this->findCheckByCheckpointIdAndUserId($checkpointId, $user->id);
 
-       if ($check === false) {
-           return false;
-       }
+        if ($check === false) {
+            return false;
+        }
 
-       return $check->delete();
+        $deleted = $check->delete();
+
+        event(new CheckEvent($checkpointId, Actions::DELETED));
+
+        return $deleted;
     }
 
     private function findCheckByCheckpointIdAndUserId(int $checkpointId, int $userId): Check|bool

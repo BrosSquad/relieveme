@@ -1,10 +1,14 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import AlertIcon from '../../assets/alert.svg'
+import { AppRoutes } from '../AppNavigator'
 import Button from '../components/Button'
 import { colors, typography } from '../theme'
 
 const AlertScreen: React.FC = () => {
+  const navigation = useNavigation()
+
   return (
     <SafeAreaView style={styles.container}>
       <AlertIcon style={styles.icon} />
@@ -13,7 +17,11 @@ const AlertScreen: React.FC = () => {
         <Text style={[typography.calloutWhite, styles.description]}>
           U velikoj ste opasnosti od poplave u vasoj neposrednoj okolini!
         </Text>
-        <Button dark style={styles.button}>
+        <Button
+          dark
+          style={styles.button}
+          onPress={() => navigation.navigate(AppRoutes.Suggestions)}
+        >
           Dalje
         </Button>
       </View>
